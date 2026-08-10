@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>辅助工具中心｜6大轻量在线觉察工具 - 觉察归位</title>
+  <meta name="description" content="包含30秒冲动觉察卡、10分钟延迟计时器、7大需求抽卡器、情绪空虚度打分器、每日复盘模板与复发接纳日志。纯治愈无成瘾机制。">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Site Navigation -->
+  <header class="site-header">
+    <div class="container nav-wrapper">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon">🌿</div>
+        <div>
+          <span class="brand-text">觉察归位</span>
+          <span class="brand-tag">注意力静心站</span>
+        </div>
+      </a>
+
+      <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="切换菜单">☰</button>
+
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html" class="nav-link">首页</a>
+        <a href="handbook.html" class="nav-link">觉察手册</a>
+        <a href="tools.html" class="nav-link active">辅助工具</a>
+        <a href="community.html" class="nav-link">学员心得</a>
+        <a href="training.html" class="nav-link">阶梯训练</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="container-narrow">
+      
+      <div class="article-header">
+        <span class="hero-tagline">🛠️ 辅助工具中心</span>
+        <h1 class="article-title">6 大轻量化在线觉察工具</h1>
+        <p class="article-meta">打开即用 · 零下载 · 零广告 · 零积分 · 无成瘾诱导机制</p>
+      </div>
+
+      <!-- Tool 1: 30秒冲动觉察三问卡 -->
+      <section class="tool-section" id="sec-tool1">
+        <div class="tool-header">
+          <div class="tool-title">⚡ 1. 30秒冲动觉察三问卡</div>
+          <div class="tool-subtitle">当刷手机的冲动来临时，花 30 秒做 3 个提问，穿透表层欲望，看到真需求。</div>
+        </div>
+
+        <div id="impulseWizard">
+          <!-- Step 1 -->
+          <div class="wizard-step active" id="impulseStep1">
+            <label class="form-label">步骤 1/3：选择你此刻触发刷手机的场景：</label>
+            <div class="option-buttons">
+              <button class="option-btn scene-opt-btn" data-val="工作/学习耗竭，身心极其疲惫">😫 身心耗竭疲惫</button>
+              <button class="option-btn scene-opt-btn" data-val="通勤等待或空档无聊">⏱️ 空档无聊打发时间</button>
+              <button class="option-btn scene-opt-btn" data-val="面对棘手大任务，内心焦虑拖延">🏃 焦虑逃避待办任务</button>
+              <button class="option-btn scene-opt-btn" data-val="夜晚睡前空虚，不愿结束一天">🌙 睡前空虚不愿入睡</button>
+              <button class="option-btn scene-opt-btn" data-val="独处孤单，渴望被理解陪伴">🫂 独处孤独渴望连接</button>
+            </div>
+            <button class="btn btn-primary" id="impulseStep1Next" disabled style="margin-top: 16px;">下一步 →</button>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="wizard-step" id="impulseStep2">
+            <label class="form-label">步骤 2/3：觉察你的底层真需求与负面情绪：</label>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px;">我此刻不是想看视频，我真正想要的是：</p>
+            <div class="option-buttons" style="margin-bottom: 20px;">
+              <button class="option-btn need-opt-btn" data-val="身心放松">💆 身心放松</button>
+              <button class="option-btn need-opt-btn" data-val="被理解与共鸣">🫂 被理解与共鸣</button>
+              <button class="option-btn need-opt-btn" data-val="掌控生活节奏">⚓ 掌控生活节奏</button>
+              <button class="option-btn need-opt-btn" data-val="逃避现实压力">🛡️ 逃避现实压力</button>
+              <button class="option-btn need-opt-btn" data-val="打发空虚无聊">☕ 打发空虚无聊</button>
+            </div>
+
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px;">我当下最煎熬的负面情绪是：</p>
+            <div class="option-buttons">
+              <button class="option-btn emotion-opt-btn" data-val="身心疲惫">😣 疲惫耗竭</button>
+              <button class="option-btn emotion-opt-btn" data-val="现实焦虑">😰 现实焦虑</button>
+              <button class="option-btn emotion-opt-btn" data-val="群体孤独">😔 孤单落寞</button>
+              <button class="option-btn emotion-opt-btn" data-val="失控无力">🌪️ 失控无力</button>
+            </div>
+            <button class="btn btn-primary" id="impulseStep2Next" disabled style="margin-top: 20px;">生成觉察卡片 ✨</button>
+          </div>
+
+          <!-- Step 3 (Result) -->
+          <div class="wizard-step" id="impulseStep3">
+            <div id="impulseCardResult"></div>
+            <button class="btn btn-secondary" id="impulseResetBtn" style="margin-top: 20px;">🔄 重新觉察</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tool 2: 10分钟静心延迟计时器 -->
+      <section class="tool-section" id="sec-tool2">
+        <div class="tool-header">
+          <div class="tool-title">⏱️ 2. 10分钟静心延迟计时器（冲动急救）</div>
+          <div class="tool-subtitle">冲动峰值仅持续 3-8 分钟。不压抑冲动，对自己说：“我 10 分钟后再刷”。</div>
+        </div>
+
+        <div style="text-align: center;">
+          <div class="pulse-circle" id="pulseCircle">呼 · 吸</div>
+          <div class="timer-display" id="timerDisplay">10:00</div>
+
+          <div style="background: var(--primary-light); padding: 14px 20px; border-radius: var(--radius-md); margin: 20px 0; color: var(--text-dark);">
+            💡 <strong>10 分钟推荐低门槛替代：</strong>
+            <div id="timerTaskRecommendation" style="font-weight: 700; color: var(--primary); margin-top: 6px; font-size: 1.05rem;">
+              ☕ 喝一杯温水，站立拉伸肩颈 3 分钟
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+            <button class="btn btn-primary" id="timerStartBtn">▶ 开启 10 分钟延迟</button>
+            <button class="btn btn-secondary" id="timerPauseBtn" style="display: none;">⏸️ 暂停</button>
+            <button class="btn btn-secondary" id="timerResetBtn">🔄 重置计时</button>
+            <button class="btn btn-secondary" id="soundToggleBtn">🔕 疗愈音效：静音</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tool 3: 七大心理需求替代抽卡器 -->
+      <section class="tool-section" id="sec-tool3">
+        <div class="tool-header">
+          <div class="tool-title">🃏 3. 七大心理需求替代抽卡器</div>
+          <div class="tool-subtitle">随机抽取或浏览 7 大底层需求对照卡，识别假性代偿，找到真实治愈方法。</div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 24px;">
+          <button class="btn btn-primary" id="drawCardBtn">🔮 随机抽取觉察替代卡</button>
+        </div>
+
+        <div id="drawnCardDisplay">
+          <div style="text-align: center; padding: 40px; border: 2px dashed var(--border-color); border-radius: var(--radius-md); color: var(--text-muted);">
+            点击上方按钮，抽取一张心理需求替换卡片
+          </div>
+        </div>
+      </section>
+
+      <!-- Tool 4: 情绪空虚度打分器 -->
+      <section class="tool-section" id="sec-tool4">
+        <div class="tool-header">
+          <div class="tool-title">📊 4. 情绪空虚度打分器</div>
+          <div class="tool-subtitle">客观评估此刻的大脑耗竭与空虚程度，获取温柔无 PUA 的状态诊断。</div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; margin-bottom: 10px; cursor: pointer;">
+            <input type="checkbox" class="emptiness-check"> 1. 我感到大脑昏沉疲惫，但手指依然在无意识划动
+          </label>
+          <label style="display: block; margin-bottom: 10px; cursor: pointer;">
+            <input type="checkbox" class="emptiness-check"> 2. 我内心正回避某件必须处理但有压力的待办事项
+          </label>
+          <label style="display: block; margin-bottom: 10px; cursor: pointer;">
+            <input type="checkbox" class="emptiness-check"> 3. 我感到内心空虚无趣，不知道接下来该做什么
+          </label>
+          <label style="display: block; margin-bottom: 10px; cursor: pointer;">
+            <input type="checkbox" class="emptiness-check"> 4. 此刻是深夜，我身体很累但强撑着不愿入睡
+          </label>
+          <label style="display: block; margin-bottom: 10px; cursor: pointer;">
+            <input type="checkbox" class="emptiness-check"> 5. 我边刷手机边伴随着强烈的愧疚与自责感
+          </label>
+        </div>
+
+        <button class="btn btn-primary" id="calcScoreBtn">评估此刻状态</button>
+        <div id="emptinessResult" style="display: none;"></div>
+      </section>
+
+      <!-- Tool 5: 每日5分钟复盘模板 -->
+      <section class="tool-section" id="sec-tool5">
+        <div class="tool-header">
+          <div class="tool-title">📝 5. 每日 5 分钟复盘模板</div>
+          <div class="tool-subtitle">睡前静心复盘，沉淀当日觉察，固化注意力主权。</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">1. 今日高频刷机场景（场景/时间/状态）</label>
+          <input type="text" class="form-input" id="refScene" placeholder="例：下班回家躺在沙发上无脑刷了40分钟短视频">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">2. 场景背后未被满足的真需求</label>
+          <input type="text" class="form-input" id="refNeed" placeholder="例：身心极度疲惫，渴望卸下工作压力放松">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">3. 短视频带来的假性满足与空洞感</label>
+          <input type="text" class="form-input" id="refFeeling" placeholder="例：感官刺激完后大脑更加昏沉亢奋，伴随愧疚">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">4. 明日优化替代行动（落地可执行）</label>
+          <input type="text" class="form-input" id="refAction" placeholder="例：下班后先去洗个热水澡，听10分钟舒缓音乐">
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-bottom: 28px;">
+          <button class="btn btn-primary" id="saveReflectionBtn">✨ 保存复盘日志</button>
+          <button class="btn btn-secondary" id="copyReflectionBtn">📋 复制复盘文本</button>
+        </div>
+
+        <h4 style="font-size: 1rem; color: var(--text-dark); margin-bottom: 12px;">📚 近期复盘历史：</h4>
+        <div id="reflectionHistory"></div>
+      </section>
+
+      <!-- Tool 6: 复发接纳日志记录工具 -->
+      <section class="tool-section" id="sec-tool6">
+        <div class="tool-header">
+          <div class="tool-title">💚 6. 复发接纳日志记录工具</div>
+          <div class="tool-subtitle">复发不是失败，是改变的正常过程。如实记录，温和接纳，不带自我指责。</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">本次刷机时长：</label>
+          <select class="form-select" id="relapseDuration">
+            <option value="15分钟以内">15分钟以内</option>
+            <option value="30分钟左右">30分钟左右</option>
+            <option value="1小时以上">1小时以上</option>
+            <option value="半天沉迷">半天沉迷</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">觉察原因（当时在逃避或补偿什么？）：</label>
+          <input type="text" class="form-input" id="relapseReason" placeholder="例：遇到棘手代码写不出来，心烦意乱逃避">
+        </div>
+
+        <button class="btn btn-accent" id="logRelapseBtn" style="margin-bottom: 24px;">接纳复发 · 重新归位</button>
+
+        <h4 style="font-size: 1rem; color: var(--text-dark); margin-bottom: 12px;">🌱 温柔接纳历史：</h4>
+        <div id="relapseHistory"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>觉察自愈 · 归位注意力 · 回归真实生活</p>
+      <div class="footer-links">
+        <a href="index.html">首页</a> ·
+        <a href="handbook.html">觉察手册</a> ·
+        <a href="tools.html">辅助工具</a> ·
+        <a href="community.html">学员心得</a> ·
+        <a href="training.html">阶梯训练</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/tools.js"></script>
+</body>
+</html>

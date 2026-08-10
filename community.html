@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学员心得｜匿名觉察感悟倾诉区 - 觉察归位</title>
+  <meta name="description" content="学员心得分享区：挂载 Waline 极简留言系统。无点赞、无热度排行、支持匿名，安全倾诉你的觉察与成长。">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Waline Client CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css"/>
+</head>
+<body>
+
+  <!-- Site Navigation -->
+  <header class="site-header">
+    <div class="container nav-wrapper">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon">🌿</div>
+        <div>
+          <span class="brand-text">觉察归位</span>
+          <span class="brand-tag">注意力静心站</span>
+        </div>
+      </a>
+
+      <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="切换菜单">☰</button>
+
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html" class="nav-link">首页</a>
+        <a href="handbook.html" class="nav-link">觉察手册</a>
+        <a href="tools.html" class="nav-link">辅助工具</a>
+        <a href="community.html" class="nav-link active">学员心得</a>
+        <a href="training.html" class="nav-link">阶梯训练</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="container-narrow">
+      
+      <div class="article-header">
+        <span class="hero-tagline">💬 学员心得分享区</span>
+        <h1 class="article-title">温和倾诉 · 真实觉察沉淀</h1>
+        <p class="article-meta">在这里，你可以匿名放下包装，倾诉真实的觉察感悟。没有热度排行，没有内卷点赞，只有温和的见证与共鸣。</p>
+      </div>
+
+      <!-- Sharing Principles -->
+      <section class="card" style="margin-bottom: 32px; background: linear-gradient(135deg, var(--bg-card), var(--primary-light));">
+        <h3 style="font-size: 1.1rem; color: var(--primary); margin-bottom: 8px;">🕊️ 倾诉区守则与承诺</h3>
+        <ul style="margin-left: 20px; font-size: 0.93rem; color: var(--text-main); line-height: 1.8;">
+          <li><strong>支持完全匿名：</strong> 无需注册账号，填入自定义昵称即可留言。</li>
+          <li><strong>去攀比去社交：</strong> 关闭点赞、关闭热度排行，没有红点干扰，只沉淀复盘感悟。</li>
+          <li><strong>接纳所有复发：</strong> 这里没有说教，分享你的觉察突破或复发困惑，都会被温柔接纳。</li>
+        </ul>
+      </section>
+
+      <!-- Interactive Server URL Config Bar -->
+      <div class="waline-config-banner">
+        <div>
+          <strong style="color: var(--primary);">⚙️ Waline 后端 ServerURL 配置</strong>
+          <p style="margin-top: 2px;">绑定你部署好的 Vercel / LeanCloud 域名以开启实时保存留言：</p>
+        </div>
+        <div class="waline-input-group">
+          <input type="text" class="form-input" id="walineServerUrlInput" placeholder="例如: https://my-waline.vercel.app">
+          <button class="btn btn-primary" id="saveWalineServerBtn" style="white-space: nowrap;">保存并应用</button>
+        </div>
+      </div>
+
+      <!-- Waline Container -->
+      <section class="waline-wrapper">
+        <div id="waline"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>觉察自愈 · 归位注意力 · 回归真实生活</p>
+      <div class="footer-links">
+        <a href="index.html">首页</a> ·
+        <a href="handbook.html">觉察手册</a> ·
+        <a href="tools.html">辅助工具</a> ·
+        <a href="community.html">学员心得</a> ·
+        <a href="training.html">阶梯训练</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Waline Client JS SDK -->
+  <script src="https://unpkg.com/@waline/client@v3/dist/waline.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/waline-config.js"></script>
+</body>
+</html>
