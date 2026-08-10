@@ -714,6 +714,62 @@ main {
   min-width: 280px;
 }
 
+/* Student Share Custom Component Styles */
+.share-mode-tag {
+  font-size: 0.8rem;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.share-mode-tag.mode-local {
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1px solid var(--primary-border);
+}
+
+.share-mode-tag.mode-cloud {
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid #f4d3ba;
+}
+
+.share-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 680px) {
+  .share-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.btn-text-action {
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: var(--transition-fast);
+}
+
+.btn-text-action:hover {
+  background: var(--primary-light);
+}
+
+.local-share-item:hover {
+  border-color: var(--primary-border);
+  box-shadow: var(--shadow-md);
+}
+
 /* Footer */
 .site-footer {
   background: var(--bg-card);
