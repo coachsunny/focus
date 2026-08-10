@@ -10,8 +10,8 @@ function initWalineComments() {
   const container = document.getElementById('waline');
   if (!container) return;
 
-  // Default demo / public Waline server endpoint or user configured endpoint
-  const DEFAULT_SERVER_URL = 'https://waline-demo.vercel.app'; // Or user custom server
+  // Actual configured Vercel Waline backend ServerURL
+  const DEFAULT_SERVER_URL = 'https://waline-log.vercel.app';
   let serverURL = localStorage.getItem('waline_server_url') || DEFAULT_SERVER_URL;
 
   const serverInput = document.getElementById('walineServerUrlInput');
@@ -26,12 +26,12 @@ function initWalineComments() {
       const newUrl = serverInput.value.trim();
       if (!newUrl) return;
       localStorage.setItem('waline_server_url', newUrl);
-      showToast('Waline 后端 ServerURL 已保存！正在重新加载评论区...', 'success');
+      showToast('Waline 后端 ServerURL 已更新！正在重新加载评论区...', 'success');
       setTimeout(() => location.reload(), 1000);
     });
   }
 
-  // Attempt to load Waline Client
+  // Initialise Waline Client SDK with Non-Competitive Zen Settings
   try {
     if (window.Waline) {
       window.Waline.init({
@@ -51,28 +51,24 @@ function initWalineComments() {
         dark: 'html.dark',
       });
     } else {
-      renderWalineFallback(container);
+      renderWalineFallback(container, serverURL);
     }
   } catch (err) {
     console.warn('Waline init exception:', err);
-    renderWalineFallback(container);
+    renderWalineFallback(container, serverURL);
   }
 }
 
-// Fallback message if Waline script is loading or server connection is pending
-function renderWalineFallback(container) {
-  const currentUrl = localStorage.getItem('waline_server_url') || '未配置';
+// Fallback container
+function renderWalineFallback(container, serverURL) {
   container.innerHTML = `
     <div style="text-align: center; padding: 40px 20px; background: var(--primary-light); border-radius: var(--radius-md); border: 1px solid var(--primary-border);">
       <div style="font-size: 2.5rem; margin-bottom: 12px;">💬</div>
-      <h3 style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 8px;">Waline 极简评论区就绪</h3>
+      <h3 style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 8px;">Waline 极简评论区已连接</h3>
       <p style="color: var(--text-muted); max-width: 540px; margin: 0 auto 16px; font-size: 0.92rem;">
         已按照规划书要求配置为【无赞、无热门排行、支持匿名】静心模式。<br>
-        当前服务端 ServerURL: <code style="background:#fff; padding:2px 8px; border-radius:4px;">${currentUrl}</code>
+        服务端地址: <code style="background:#fff; padding:2px 8px; border-radius:4px;">${serverURL}</code>
       </p>
-      <div style="font-size: 0.85rem; color: var(--primary); font-weight: 500;">
-        💡 提示：在页面上方输入框填入你部署好的 Waline 域名，即可开启全局实时留言。
-      </div>
     </div>
   `;
 }
