@@ -54,19 +54,9 @@
         </ul>
       </section>
 
-      <!-- Interactive Server URL Config Bar -->
-      <div class="waline-config-banner">
-        <div>
-          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px; flex-wrap: wrap;">
-            <strong style="color: var(--primary);">⚙️ 心得系统模式与后端配置</strong>
-            <span id="shareModeStatus"></span>
-          </div>
-          <p style="margin-top: 2px;">预设启用【免部署·本地静心模式】可即刻发布心得。如需跨设备/多用户云端同步，可绑定你部署好的 Waline ServerURL：</p>
-        </div>
-        <div class="waline-input-group">
-          <input type="text" class="form-input" id="walineServerUrlInput" placeholder="例如: https://my-waline.vercel.app (留空即使用本地模式)">
-          <button class="btn btn-primary" id="saveWalineServerBtn" style="white-space: nowrap;">保存并应用</button>
-        </div>
+      <!-- Share system status indicator -->
+      <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+        <span id="shareModeStatus"></span>
       </div>
 
       <!-- Waline Container -->
