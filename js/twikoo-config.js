@@ -118,87 +118,111 @@ function fillAnonymousEmail() {
 }
 
 /**
- * 隐藏不需要的元素（靠文本和元素类型判断，不依赖 class 名）
- * 只设 display:none，不移动 DOM，避免与 Vue 冲突
+ * 隐藏元素的工具函数（用 !important 确保优先级最高，覆盖 Twikoo 的 CSS）
+ */
+function hideEl(el) {
+  if (el) {
+    el.style.setProperty('display', 'none', 'important');
+  }
+}
+
+/**
+ * 隐藏不需要的元素（暴力方式，宽松匹配）
+ * 只设 display:none !important，不移动 DOM，避免与 Vue 冲突
  */
 function hideUnwantedElements() {
   const container = document.getElementById('tcomment');
   if (!container) return;
 
-  // 1. 隐藏所有 img（头像）
-  container.querySelectorAll('img').forEach(img => {
-    img.style.display = 'none';
-  });
+  // 1. 隐藏所有 img（头像、图标）
+  container.querySelectorAll('img').forEach(img => hideEl(img));
 
-  // 2. 隐藏邮箱和网址输入框：找到文本为"邮箱"/"网址"的标签，向上找输入框容器
-  container.querySelectorAll('*').forEach(el => {
-    const text = el.textContent.trim();
-    if ((text === '邮箱' || text === '网址') && el.children.length === 0) {
-      let wrapper = el.parentElement;
+  // 2. 隐藏邮箱和网址输入框：第2、3个 input 及其父容器
+  const inputs = container.querySelectorAll('input');
+  if (inputs.length >= 3) {
+    [inputs[1], inputs[2]].forEach(input => {
+      hideEl(input);
+      // 隐藏前缀标签
+      let prev = input.previousElementSibling;
+      if (prev && (prev.textContent.includes('邮箱') || prev.textContent.includes('网址'))) {
+        hideEl(prev);
+      }
+      // 向上找，隐藏输入框组
+      let wrapper = input.parentElement;
       while (wrapper && wrapper !== container) {
         const w = wrapper.getBoundingClientRect().width;
-        if (w > 120 && w < 500) {
-          wrapper.style.display = 'none';
+        if (w > 100 && w < 500) {
+          hideEl(wrapper);
           break;
         }
         wrapper = wrapper.parentElement;
       }
-    }
-  });
+    });
+  }
 
-  // 3. 隐藏特定文本的元素
+  // 3. 隐藏包含特定文本的元素（宽松匹配）
   container.querySelectorAll('*').forEach(el => {
     const text = el.textContent.trim();
-    // 预览、Markdown、热门
-    if ((text === '预览' || text === 'M↓' || text === '热门') && el.children.length === 0) {
-      el.style.display = 'none';
+    if (el.children.length > 5) return; // 跳过大容器，避免误隐藏
+
+    if (text === '预览' || text === 'M↓' || text === '热门' || text === 'Markdown') {
+      hideEl(el);
     }
-    // X 条评论
-    if (/^\d+\s*条评论$/.test(text) && el.children.length <= 1) {
-      el.style.display = 'none';
+    if (/^\d+\s*条评论/.test(text) && text.length < 20) {
+      hideEl(el);
     }
-    // Powered by Twikoo
-    if (text.includes('Powered by') && el.children.length <= 2) {
-      el.style.display = 'none';
+    if (text.includes('Powered by') && text.length < 50) {
+      hideEl(el);
     }
-    // 操作系统/浏览器信息（短文本，包含系统关键词）
-    if (text.length < 60 && el.children.length <= 3 &&
+    if (text.length < 80 &&
         (text.includes('Windows') || text.includes('Mac') || text.includes('Linux') ||
          text.includes('Chrome') || text.includes('Safari') || text.includes('Firefox') ||
          text.includes('Edge'))) {
-      el.style.display = 'none';
+      hideEl(el);
     }
   });
 
-  // 4. 隐藏评论中的图标按钮（点赞、回复、删除）：没有文字的按钮/链接
+  // 4. 隐藏评论中的所有按钮和链接（点赞、回复、删除）
   container.querySelectorAll('[class*="comment"], [class*="Comment"]').forEach(comment => {
-    comment.querySelectorAll('button, a').forEach(btn => {
-      if (btn.textContent.trim() === '' && btn.children.length > 0) {
-        btn.style.display = 'none';
-      }
-    });
+    comment.querySelectorAll('button, a').forEach(btn => hideEl(btn));
   });
 
-  // 5. 隐藏表情按钮：文本域下方，除了发送按钮之外没有文字的按钮
+  // 5. 隐藏文本域下方除了发送按钮之外的所有按钮
   const textarea = container.querySelector('textarea');
   if (textarea) {
     let parent = textarea.parentElement;
     while (parent && parent !== container) {
       parent.querySelectorAll('button').forEach(btn => {
-        if (btn.textContent.trim() === '' && !btn.classList.contains('el-button--primary')) {
-          btn.style.display = 'none';
+        if (!btn.classList.contains('el-button--primary') && !btn.textContent.includes('发送')) {
+          hideEl(btn);
         }
       });
       parent = parent.parentElement;
     }
   }
 
-  // 6. 隐藏排序栏中的刷新、设置图标按钮（没有文字的按钮）
+  // 6. 隐藏所有没有文字的按钮（刷新、设置、表情等图标按钮）
   container.querySelectorAll('button').forEach(btn => {
-    if (btn.textContent.trim() === '' && btn.closest('[class*="sort"], [class*="toolbar"], [class*="header"]')) {
-      btn.style.display = 'none';
+    if (btn.textContent.trim() === '' && !btn.classList.contains('el-button--primary')) {
+      hideEl(btn);
     }
   });
+
+  // 7. 隐藏头像：输入区第一个非输入框的小子元素
+  const firstInput = container.querySelector('input');
+  if (firstInput) {
+    let row = firstInput.parentElement;
+    while (row && row !== container && row.children.length < 3) {
+      row = row.parentElement;
+    }
+    if (row && row !== container) {
+      const firstChild = row.firstElementChild;
+      if (firstChild && firstChild.tagName !== 'INPUT' && firstChild.tagName !== 'TEXTAREA' &&
+          firstChild.textContent.trim().length <= 3) {
+        hideEl(firstChild);
+      }
+    }
+  }
 }
 
 function showErrorState(container, statusBadge, message) {
