@@ -63,16 +63,13 @@ async function initTwikooComments() {
         statusBadge.innerHTML = '<span class="share-mode-tag mode-cloud">🌐 云端心得系统已连接</span>';
       }
 
-      // 等待 DOM 渲染后，分离输入区和评论列表
-      setTimeout(separateInputAndList, 600);
-      setTimeout(fillAnonymousEmail, 600);
-      setTimeout(forceStyleOverride, 600);
-      // 评论是异步加载的，再等久一点确保列表渲染
-      setTimeout(separateInputAndList, 1500);
-      setTimeout(fillAnonymousEmail, 1500);
-      setTimeout(forceStyleOverride, 1500);
-      // 第三次确保覆盖（Twikoo 可能多次重渲染）
-      setTimeout(forceStyleOverride, 3000);
+      // 启动 MutationObserver 持续监听 DOM 变化
+      startMutationObserver();
+
+      // 初始执行几次
+      setTimeout(applyAllFixes, 500);
+      setTimeout(applyAllFixes, 1200);
+      setTimeout(applyAllFixes, 2500);
 
     } catch (err) {
       console.warn('Twikoo init failed:', err);
@@ -85,9 +82,39 @@ async function initTwikooComments() {
 }
 
 /**
+ * 启动 MutationObserver，持续监听 Twikoo DOM 变化
+ * Twikoo 每次重渲染都会自动应用样式修复
+ */
+function startMutationObserver() {
+  const tcomment = document.getElementById('tcomment');
+  const listContainer = document.getElementById('tcomment-list');
+  if (!tcomment && !listContainer) return;
+
+  const observer = new MutationObserver((mutations) => {
+    // 防抖：多次变化只执行一次
+    clearTimeout(window._twikooFixTimer);
+    window._twikooFixTimer = setTimeout(applyAllFixes, 150);
+  });
+
+  if (tcomment) {
+    observer.observe(tcomment, { childList: true, subtree: true, attributes: true });
+  }
+  if (listContainer) {
+    observer.observe(listContainer, { childList: true, subtree: true, attributes: true });
+  }
+}
+
+/**
+ * 执行所有修复：分离输入区列表、填充邮箱、强制样式
+ */
+function applyAllFixes() {
+  separateInputAndList();
+  fillAnonymousEmail();
+  forceStyleOverride();
+}
+
+/**
  * 将 Twikoo 的输入区和评论列表分离到两个卡片中
- * 输入区（含 textarea）留在 #tcomment
- * 评论列表（不含 textarea）移动到 #tcomment-list
  */
 function separateInputAndList() {
   const tcomment = document.getElementById('tcomment');
@@ -99,29 +126,27 @@ function separateInputAndList() {
   const twikooEl = tcomment.querySelector('.twikoo');
   if (!twikooEl) return;
 
-  // 遍历 .twikoo 的直接子元素
-  // 包含 textarea 的是输入区，保留在原地
-  // 不包含 textarea 的是评论列表/分页/空状态，移动到列表容器
   const children = Array.from(twikooEl.children);
   let moved = false;
 
   children.forEach(child => {
     const hasTextarea = child.querySelector('textarea');
-    // 同时排除管理按钮区域（齿轮/刷新），它们应该留在输入区
-    const isAdminBar = child.querySelector('[class*="admin"], [class*="gear"], [class*="setting"]');
+    const isAdminBar = hasClass(child, 'admin') || hasClass(child, 'gear') || hasClass(child, 'setting');
 
     if (!hasTextarea && !isAdminBar) {
-      listContainer.appendChild(child);
-      moved = true;
+      // 避免重复移动
+      if (child.parentElement !== listContainer) {
+        listContainer.appendChild(child);
+        moved = true;
+      }
     }
   });
 
-  // 如果移动了元素，或者列表容器已有内容，显示列表卡片
   if (moved || listContainer.children.length > 0) {
     listCard.style.display = 'block';
   }
 
-  // 把管理按钮（齿轮）移到输入区卡片的右上角
+  // 把管理按钮（齿轮）移到输入区卡片右上角
   const adminBtn = twikooEl.querySelector('[class*="admin"], [class*="gear"], [class*="setting"]');
   if (adminBtn) {
     adminBtn.style.position = 'absolute';
@@ -129,11 +154,9 @@ function separateInputAndList() {
     adminBtn.style.right = '16px';
     adminBtn.style.opacity = '0.4';
     adminBtn.style.transition = 'opacity 0.2s';
-    adminBtn.addEventListener('mouseenter', () => { adminBtn.style.opacity = '1'; });
-    adminBtn.addEventListener('mouseleave', () => { adminBtn.style.opacity = '0.4'; });
-    // 确保输入区卡片有定位上下文
+    adminBtn.style.zIndex = '10';
     const inputCard = document.querySelector('.share-input-card');
-    if (inputCard) {
+    if (inputCard && adminBtn.parentElement !== inputCard) {
       inputCard.style.position = 'relative';
       inputCard.appendChild(adminBtn);
     }
@@ -141,16 +164,15 @@ function separateInputAndList() {
 }
 
 /**
- * 自动填充匿名邮箱（Twikoo 默认邮箱必填，隐藏后需自动填值才能发送）
+ * 自动填充匿名邮箱（Twikoo 默认邮箱必填）
  */
 function fillAnonymousEmail() {
-  const inputs = document.querySelectorAll('.share-input-card .el-input__inner');
-  // 第一个是昵称，第二个是邮箱，第三个是网址
+  const inputs = document.querySelectorAll('.share-input-card input');
+  // 通常第一个是昵称，第二个是邮箱，第三个是网址
   if (inputs.length >= 2) {
     const emailInput = inputs[1];
     if (!emailInput.value) {
       emailInput.value = 'anonymous@focus.local';
-      // 触发 Vue 响应式更新
       emailInput.dispatchEvent(new Event('input', { bubbles: true }));
       emailInput.dispatchEvent(new Event('change', { bubbles: true }));
     }
@@ -159,75 +181,118 @@ function fillAnonymousEmail() {
 
 /**
  * 强制覆盖 Twikoo 样式（JS 内联样式，优先级最高）
- * 解决 CSS 选择器无法匹配 Twikoo 动态 DOM 的问题
  */
 function forceStyleOverride() {
-  // ===== 1. 输入区：强制背景透明 =====
+  fixInputBackground();
+  hideInputButtons();
+  hideListSocialElements();
+}
+
+/**
+ * 修复输入区深绿色背景
+ */
+function fixInputBackground() {
   const inputCard = document.querySelector('.share-input-card');
-  if (inputCard) {
-    const allEls = inputCard.querySelectorAll('*');
-    allEls.forEach(el => {
-      const tag = el.tagName.toLowerCase();
-      // 跳过输入框和文本域，保留白色背景
-      if (tag === 'input' || tag === 'textarea' ||
-          el.classList.contains('el-input__inner') ||
-          el.classList.contains('el-textarea__inner')) {
-        return;
-      }
-      // 跳过发送按钮，保留绿色背景
-      if (el.classList.contains('el-button--primary') ||
-          el.classList.contains('tk-submit') ||
-          (tag === 'button' && el.textContent.includes('发送'))) {
-        return;
-      }
-      el.style.backgroundColor = 'transparent';
-      el.style.background = 'transparent';
-    });
+  if (!inputCard) return;
 
-    // ===== 2. 输入区：隐藏表情、Markdown 按钮 =====
-    inputCard.querySelectorAll('button, a, span, div').forEach(el => {
-      const cls = (el.className || '').toString();
-      const text = el.textContent.trim();
-      if (cls.includes('emoji') || cls.includes('smile') ||
-          cls.includes('markdown') || cls.includes('preview') ||
-          text === 'M↓' || text === '预览') {
-        el.style.display = 'none';
+  // 找到包含 textarea 的容器（输入区主容器），向上遍历直到 inputCard
+  const textarea = inputCard.querySelector('textarea');
+  if (textarea) {
+    let el = textarea;
+    while (el && el !== inputCard) {
+      if (el.tagName !== 'TEXTAREA' && !el.classList.contains('el-textarea__inner')) {
+        el.style.backgroundColor = 'transparent';
+        el.style.background = 'transparent';
       }
-    });
+      el = el.parentElement;
+    }
   }
 
-  // ===== 3. 评论区：隐藏社交元素 =====
+  // 同时遍历所有元素，清除非输入框/按钮的背景
+  inputCard.querySelectorAll('*').forEach(el => {
+    const tag = el.tagName.toLowerCase();
+    if (tag === 'input' || tag === 'textarea') return;
+    if (el.classList.contains('el-input__inner') || el.classList.contains('el-textarea__inner')) return;
+    if (el.classList.contains('el-button--primary') || el.classList.contains('tk-submit')) return;
+    if (tag === 'button' && el.textContent.includes('发送')) return;
+
+    el.style.backgroundColor = 'transparent';
+    el.style.background = 'transparent';
+  });
+}
+
+/**
+ * 隐藏输入区的表情、Markdown、预览按钮
+ */
+function hideInputButtons() {
+  const inputCard = document.querySelector('.share-input-card');
+  if (!inputCard) return;
+
+  inputCard.querySelectorAll('button, a, span, div, i, svg').forEach(el => {
+    const text = el.textContent.trim();
+    // 隐藏表情按钮（笑脸图标）
+    if (hasClass(el, 'emoji') || hasClass(el, 'smile') || hasClass(el, 'expression')) {
+      el.style.display = 'none';
+    }
+    // 隐藏 Markdown/预览按钮
+    if (hasClass(el, 'markdown') || hasClass(el, 'preview') || text === 'M↓' || text === '预览') {
+      el.style.display = 'none';
+    }
+  });
+}
+
+/**
+ * 隐藏评论区的社交元素（点赞、回复、热门等）
+ */
+function hideListSocialElements() {
   const listCard = document.querySelector('.share-list-card');
-  if (listCard) {
-    listCard.querySelectorAll('*').forEach(el => {
-      const cls = (el.className || '').toString();
-      const text = el.textContent.trim();
+  if (!listCard) return;
 
-      // 隐藏点赞、回复、热门
-      if (cls.includes('like') || cls.includes('reply') ||
-          cls.includes('hot') || cls.includes('thumb')) {
-        el.style.display = 'none';
+  listCard.querySelectorAll('*').forEach(el => {
+    const text = el.textContent.trim();
+
+    // 隐藏点赞、回复、热门
+    if (hasClass(el, 'like') || hasClass(el, 'reply') || hasClass(el, 'hot') || hasClass(el, 'thumb')) {
+      el.style.display = 'none';
+    }
+    // 隐藏"热门"文本
+    if (text === '热门' && el.children.length === 0) {
+      el.style.display = 'none';
+    }
+    // 隐藏操作系统/浏览器信息
+    if (hasClass(el, 'os') || hasClass(el, 'browser') || hasClass(el, 'ua') || hasClass(el, 'user-agent')) {
+      el.style.display = 'none';
+    }
+    // 隐藏评论数标题（如"1条评论"）
+    if (text.includes('条评论') && el.children.length <= 1) {
+      el.style.display = 'none';
+    }
+    // 隐藏刷新、设置、管理齿轮
+    if (hasClass(el, 'refresh') || hasClass(el, 'setting') || hasClass(el, 'gear') || hasClass(el, 'admin')) {
+      el.style.display = 'none';
+    }
+  });
+}
+
+/**
+ * 安全检查元素是否包含某个 class（兼容 SVG 元素）
+ */
+function hasClass(el, keyword) {
+  if (!el) return false;
+  // 优先用 classList
+  if (el.classList && typeof el.classList.contains === 'function') {
+    for (let i = 0; i < el.classList.length; i++) {
+      if (el.classList[i].toLowerCase().includes(keyword.toLowerCase())) {
+        return true;
       }
-      // 隐藏"热门"文本链接
-      if (text === '热门' && el.children.length === 0) {
-        el.style.display = 'none';
-      }
-      // 隐藏操作系统/浏览器信息
-      if (cls.includes('os') || cls.includes('browser') ||
-          cls.includes('ua') || cls.includes('user-agent')) {
-        el.style.display = 'none';
-      }
-      // 隐藏评论数标题（如"1条评论"）
-      if (text.includes('条评论') && el.children.length <= 1) {
-        el.style.display = 'none';
-      }
-      // 隐藏刷新、设置、管理齿轮
-      if (cls.includes('refresh') || cls.includes('setting') ||
-          cls.includes('gear') || cls.includes('admin')) {
-        el.style.display = 'none';
-      }
-    });
+    }
   }
+  // 备用：getAttribute('class')
+  const cls = el.getAttribute && el.getAttribute('class');
+  if (cls && cls.toLowerCase().includes(keyword.toLowerCase())) {
+    return true;
+  }
+  return false;
 }
 
 function showErrorState(container, statusBadge, message) {
