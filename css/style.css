@@ -693,6 +693,13 @@ main {
 }
 
 /* ===== 输入区：极简风格 ===== */
+/* 覆盖 Twikoo 默认深色背景 */
+.share-input-card .twikoo,
+.share-input-card .twikoo > div,
+.share-input-card .twikoo * {
+  background-color: transparent !important;
+}
+
 /* 隐藏头像 */
 .share-input-card .tk-avatar,
 .share-input-card .twikoo-avatar,
@@ -703,7 +710,7 @@ main {
 /* 昵称输入框全宽，隐藏邮箱和网址 */
 .share-input-card .el-input {
   width: 100% !important;
-  margin-bottom: 12px !important;
+  margin-bottom: 14px !important;
 }
 
 .share-input-card .el-input:nth-of-type(2),
@@ -711,9 +718,37 @@ main {
   display: none !important;
 }
 
-/* 隐藏"必填"标记 */
+/* 昵称输入框：明显的白色背景 + 边框 */
+.share-input-card .el-input__inner {
+  background: #ffffff !important;
+  border: 1.5px solid #c8d8d0 !important;
+  border-radius: 8px !important;
+  color: #1f2a26 !important;
+  font-size: 0.95rem !important;
+  padding: 10px 14px !important;
+  height: auto !important;
+  line-height: 1.5 !important;
+}
+
 .share-input-card .el-input__inner::placeholder {
-  color: #a0b0a8 !important;
+  color: #9aada4 !important;
+}
+
+.share-input-card .el-input__inner:focus {
+  border-color: #3b7a69 !important;
+  box-shadow: 0 0 0 3px rgba(59, 122, 105, 0.12) !important;
+  outline: none !important;
+}
+
+/* 昵称输入框前缀标签（"昵称"二字） */
+.share-input-card .el-input-group__prepend,
+.share-input-card .el-input__prefix,
+.share-input-card .el-input-group--prepend .el-input__inner {
+  background: #f0f5f2 !important;
+  color: #3b7a69 !important;
+  border-color: #c8d8d0 !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
 }
 
 /* 文本域 */

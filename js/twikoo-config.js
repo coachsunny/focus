@@ -65,8 +65,10 @@ async function initTwikooComments() {
 
       // 等待 DOM 渲染后，分离输入区和评论列表
       setTimeout(separateInputAndList, 600);
+      setTimeout(fillAnonymousEmail, 600);
       // 评论是异步加载的，再等久一点确保列表渲染
       setTimeout(separateInputAndList, 1500);
+      setTimeout(fillAnonymousEmail, 1500);
 
     } catch (err) {
       console.warn('Twikoo init failed:', err);
@@ -130,6 +132,23 @@ function separateInputAndList() {
     if (inputCard) {
       inputCard.style.position = 'relative';
       inputCard.appendChild(adminBtn);
+    }
+  }
+}
+
+/**
+ * 自动填充匿名邮箱（Twikoo 默认邮箱必填，隐藏后需自动填值才能发送）
+ */
+function fillAnonymousEmail() {
+  const inputs = document.querySelectorAll('.share-input-card .el-input__inner');
+  // 第一个是昵称，第二个是邮箱，第三个是网址
+  if (inputs.length >= 2) {
+    const emailInput = inputs[1];
+    if (!emailInput.value) {
+      emailInput.value = 'anonymous@focus.local';
+      // 触发 Vue 响应式更新
+      emailInput.dispatchEvent(new Event('input', { bubbles: true }));
+      emailInput.dispatchEvent(new Event('change', { bubbles: true }));
     }
   }
 }
