@@ -118,7 +118,7 @@ function fillAnonymousEmail() {
 }
 
 /**
- * 隐藏元素的工具函数（用 !important 确保优先级最高，覆盖 Twikoo 的 CSS）
+ * 隐藏元素的工具函数（用 !important 确保优先级最高）
  */
 function hideEl(el) {
   if (el) {
@@ -127,53 +127,31 @@ function hideEl(el) {
 }
 
 /**
- * 隐藏不需要的元素（暴力方式，宽松匹配）
- * 只设 display:none !important，不移动 DOM，避免与 Vue 冲突
+ * 隐藏 CSS 无法处理的元素（主要靠文本匹配）
+ * 大部分隐藏已由 CSS 完成，这里只做补充
  */
 function hideUnwantedElements() {
   const container = document.getElementById('tcomment');
   if (!container) return;
 
-  // 1. 隐藏所有 img（头像、图标）
-  container.querySelectorAll('img').forEach(img => hideEl(img));
-
-  // 2. 隐藏邮箱和网址输入框：第2、3个 input 及其父容器
-  const inputs = container.querySelectorAll('input');
-  if (inputs.length >= 3) {
-    [inputs[1], inputs[2]].forEach(input => {
-      hideEl(input);
-      // 隐藏前缀标签
-      let prev = input.previousElementSibling;
-      if (prev && (prev.textContent.includes('邮箱') || prev.textContent.includes('网址'))) {
-        hideEl(prev);
-      }
-      // 向上找，隐藏输入框组
-      let wrapper = input.parentElement;
-      while (wrapper && wrapper !== container) {
-        const w = wrapper.getBoundingClientRect().width;
-        if (w > 100 && w < 500) {
-          hideEl(wrapper);
-          break;
-        }
-        wrapper = wrapper.parentElement;
-      }
-    });
-  }
-
-  // 3. 隐藏包含特定文本的元素（宽松匹配）
+  // 隐藏包含特定文本的元素（CSS 无法根据文本选择）
   container.querySelectorAll('*').forEach(el => {
     const text = el.textContent.trim();
-    if (el.children.length > 5) return; // 跳过大容器，避免误隐藏
+    if (el.children.length > 5) return;
 
-    if (text === '预览' || text === 'M↓' || text === '热门' || text === 'Markdown') {
+    // 热门排序
+    if (text === '热门' && text.length < 5) {
       hideEl(el);
     }
+    // X 条评论
     if (/^\d+\s*条评论/.test(text) && text.length < 20) {
       hideEl(el);
     }
+    // Powered by Twikoo
     if (text.includes('Powered by') && text.length < 50) {
       hideEl(el);
     }
+    // 操作系统/浏览器信息
     if (text.length < 80 &&
         (text.includes('Windows') || text.includes('Mac') || text.includes('Linux') ||
          text.includes('Chrome') || text.includes('Safari') || text.includes('Firefox') ||
@@ -182,47 +160,18 @@ function hideUnwantedElements() {
     }
   });
 
-  // 4. 隐藏评论中的所有按钮和链接（点赞、回复、删除）
-  container.querySelectorAll('[class*="comment"], [class*="Comment"]').forEach(comment => {
-    comment.querySelectorAll('button, a').forEach(btn => hideEl(btn));
-  });
-
-  // 5. 隐藏文本域下方除了发送按钮之外的所有按钮
-  const textarea = container.querySelector('textarea');
-  if (textarea) {
-    let parent = textarea.parentElement;
-    while (parent && parent !== container) {
-      parent.querySelectorAll('button').forEach(btn => {
-        if (!btn.classList.contains('el-button--primary') && !btn.textContent.includes('发送')) {
-          hideEl(btn);
-        }
-      });
-      parent = parent.parentElement;
-    }
-  }
-
-  // 6. 隐藏所有没有文字的按钮（刷新、设置、表情等图标按钮）
-  container.querySelectorAll('button').forEach(btn => {
-    if (btn.textContent.trim() === '' && !btn.classList.contains('el-button--primary')) {
-      hideEl(btn);
-    }
-  });
-
-  // 7. 隐藏头像：输入区第一个非输入框的小子元素
-  const firstInput = container.querySelector('input');
-  if (firstInput) {
-    let row = firstInput.parentElement;
-    while (row && row !== container && row.children.length < 3) {
-      row = row.parentElement;
-    }
-    if (row && row !== container) {
-      const firstChild = row.firstElementChild;
-      if (firstChild && firstChild.tagName !== 'INPUT' && firstChild.tagName !== 'TEXTAREA' &&
-          firstChild.textContent.trim().length <= 3) {
-        hideEl(firstChild);
+  // 隐藏邮箱和网址输入框的前缀标签（如果 CSS 没隐藏掉）
+  container.querySelectorAll('*').forEach(el => {
+    const text = el.textContent.trim();
+    if ((text === '邮箱' || text === '网址') && el.children.length === 0) {
+      hideEl(el);
+      // 同时隐藏后面的 input
+      let next = el.nextElementSibling;
+      if (next && next.tagName === 'INPUT') {
+        hideEl(next);
       }
     }
-  }
+  });
 }
 
 function showErrorState(container, statusBadge, message) {
