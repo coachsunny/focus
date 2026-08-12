@@ -67,6 +67,11 @@ async function initTwikooComments() {
       setTimeout(fillAnonymousEmail, 800);
       setTimeout(fillAnonymousEmail, 2000);
 
+      // 隐藏不需要的元素（头像、邮箱框、表情、点赞等）
+      setTimeout(hideUnwantedElements, 1000);
+      setTimeout(hideUnwantedElements, 2500);
+      setTimeout(hideUnwantedElements, 4000);
+
     } catch (err) {
       console.warn('Twikoo init failed:', err);
       showErrorState(container, statusBadge, '心得系统加载异常，请刷新页面重试');
@@ -90,6 +95,86 @@ function fillAnonymousEmail() {
       emailInput.dispatchEvent(new Event('input', { bubbles: true }));
       emailInput.dispatchEvent(new Event('change', { bubbles: true }));
     }
+  }
+}
+
+/**
+ * 隐藏不需要的元素（只设 display:none，不移动 DOM，避免与 Vue 冲突）
+ * 隐藏：头像、邮箱/网址输入框、表情、预览、点赞、回复、热门、评论数、操作系统信息、Powered by Twikoo
+ */
+function hideUnwantedElements() {
+  const container = document.getElementById('tcomment');
+  if (!container) return;
+
+  const allEls = container.querySelectorAll('*');
+
+  allEls.forEach(el => {
+    const cls = (el.className || '').toString();
+    const text = el.textContent.trim();
+    const tag = el.tagName.toLowerCase();
+
+    // 隐藏头像
+    if (cls.toLowerCase().includes('avatar')) {
+      el.style.display = 'none';
+    }
+
+    // 隐藏表情按钮
+    if (cls.toLowerCase().includes('emoji') || cls.toLowerCase().includes('smile')) {
+      el.style.display = 'none';
+    }
+
+    // 隐藏预览、Markdown 按钮
+    if (cls.toLowerCase().includes('preview') || cls.toLowerCase().includes('markdown') ||
+        text === '预览' || text === 'M↓') {
+      el.style.display = 'none';
+    }
+
+    // 隐藏点赞、回复
+    if (cls.toLowerCase().includes('like') || cls.toLowerCase().includes('reply') ||
+        cls.toLowerCase().includes('thumb')) {
+      el.style.display = 'none';
+    }
+
+    // 隐藏热门
+    if (cls.toLowerCase().includes('hot') || (text === '热门' && el.children.length === 0)) {
+      el.style.display = 'none';
+    }
+
+    // 隐藏评论数标题（如"1条评论"）
+    if (text.includes('条评论') && el.children.length <= 1) {
+      el.style.display = 'none';
+    }
+
+    // 隐藏操作系统/浏览器信息
+    if (cls.toLowerCase().includes('os') || cls.toLowerCase().includes('browser') ||
+        cls.toLowerCase().includes('ua') || cls.toLowerCase().includes('user-agent')) {
+      el.style.display = 'none';
+    }
+
+    // 隐藏刷新、设置、管理齿轮
+    if (cls.toLowerCase().includes('refresh') || cls.toLowerCase().includes('setting') ||
+        cls.toLowerCase().includes('gear') || cls.toLowerCase().includes('admin')) {
+      el.style.display = 'none';
+    }
+
+    // 隐藏 Powered by Twikoo
+    if (text.includes('Powered by') || (text.includes('Twikoo v') && el.children.length === 0)) {
+      el.style.display = 'none';
+    }
+  });
+
+  // 隐藏邮箱和网址输入框（第2、3个 input 的父容器）
+  const inputs = container.querySelectorAll('input');
+  if (inputs.length >= 3) {
+    [inputs[1], inputs[2]].forEach(input => {
+      // 找到最近的输入框容器并隐藏
+      let wrapper = input.closest('.el-input, .el-input-group, [class*="input"]');
+      if (wrapper) {
+        wrapper.style.display = 'none';
+      } else {
+        input.style.display = 'none';
+      }
+    });
   }
 }
 

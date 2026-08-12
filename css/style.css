@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    觉察归位｜注意力静心训练站 - Core Design System & Global Styles
    ========================================================================== */
 
@@ -694,16 +694,17 @@ main {
 
 /* ===== Twikoo 纯 CSS 定制（不操作 DOM，避免与 Vue 冲突） ===== */
 
-/* 所有元素背景透明 */
+/* 所有元素背景透明（同时覆盖 background 简写和 background-color） */
 #tcomment,
 #tcomment * {
+  background: transparent !important;
   background-color: transparent !important;
 }
 
 /* 输入框和文本域保留白色背景 */
 #tcomment input {
-  background-color: #ffffff !important;
   background: #ffffff !important;
+  background-color: #ffffff !important;
   border: 1.5px solid #c8d8d0 !important;
   border-radius: 8px !important;
   color: #1f2a26 !important;
@@ -714,8 +715,8 @@ main {
 }
 
 #tcomment textarea {
-  background-color: #f6f9f7 !important;
   background: #f6f9f7 !important;
+  background-color: #f6f9f7 !important;
   border: 1px solid #e2ebe6 !important;
   border-radius: 10px !important;
   color: #1f2a26 !important;
@@ -741,40 +742,19 @@ main {
 /* 昵称输入框前缀标签 */
 #tcomment .el-input-group__prepend,
 #tcomment .el-input__prefix {
-  background-color: #f0f5f2 !important;
   background: #f0f5f2 !important;
+  background-color: #f0f5f2 !important;
   color: #3b7a69 !important;
   border-color: #c8d8d0 !important;
   font-weight: 600 !important;
   font-size: 0.9rem !important;
 }
 
-/* 隐藏邮箱、网址输入框 */
-#tcomment .el-input:nth-of-type(2),
-#tcomment .el-input:nth-of-type(3) {
-  display: none !important;
-}
-
-/* 隐藏头像 */
-#tcomment .el-avatar,
-#tcomment [class*="avatar"] {
-  display: none !important;
-}
-
-/* 隐藏表情、Markdown、预览按钮 */
-#tcomment [class*="emoji"],
-#tcomment [class*="smile"],
-#tcomment [class*="markdown"],
-#tcomment [class*="preview"],
-#tcomment .el-button--text {
-  display: none !important;
-}
-
 /* 发送按钮保留绿色背景 */
 #tcomment .el-button--primary,
 #tcomment [class*="submit"] {
-  background-color: #3b7a69 !important;
   background: #3b7a69 !important;
+  background-color: #3b7a69 !important;
   border-color: #3b7a69 !important;
   border-radius: 8px !important;
   color: #ffffff !important;
@@ -786,8 +766,8 @@ main {
 
 #tcomment .el-button--primary:hover,
 #tcomment [class*="submit"]:hover {
-  background-color: #2e6153 !important;
   background: #2e6153 !important;
+  background-color: #2e6153 !important;
   border-color: #2e6153 !important;
   transform: translateY(-1px) !important;
 }
@@ -797,6 +777,7 @@ main {
 #tcomment [class*="limit"] {
   color: #9aada4 !important;
   font-size: 0.8rem !important;
+  background: transparent !important;
 }
 
 /* ===== 评论列表样式 ===== */
@@ -810,7 +791,7 @@ main {
 #tcomment [class*="twikoo-comment"] {
   padding: 20px 0 !important;
   border-bottom: 1px solid #e8efeb !important;
-  background-color: transparent !important;
+  background: transparent !important;
 }
 
 #tcomment [class*="tk-comment"]:last-child,
@@ -826,7 +807,7 @@ main {
   font-weight: 600 !important;
   font-size: 0.92rem !important;
   text-decoration: none !important;
-  background-color: transparent !important;
+  background: transparent !important;
 }
 
 /* 时间 */
@@ -836,7 +817,7 @@ main {
   color: #9aada4 !important;
   font-size: 0.78rem !important;
   margin-left: 10px !important;
-  background-color: transparent !important;
+  background: transparent !important;
 }
 
 /* 评论内容 */
@@ -847,13 +828,13 @@ main {
   font-size: 0.93rem !important;
   line-height: 1.85 !important;
   margin-top: 8px !important;
-  background-color: transparent !important;
+  background: transparent !important;
 }
 
 #tcomment [class*="tk-content"] p,
 #tcomment [class*="twikoo-content"] p {
   margin: 0 0 8px 0 !important;
-  background-color: transparent !important;
+  background: transparent !important;
 }
 
 #tcomment [class*="tk-content"] p:last-child,
@@ -861,47 +842,16 @@ main {
   margin-bottom: 0 !important;
 }
 
-/* ===== 隐藏社交元素（去攀比原则） ===== */
-#tcomment [class*="like"],
-#tcomment [class*="reply"],
-#tcomment [class*="hot"],
-#tcomment [class*="thumb"] {
-  display: none !important;
-}
-
-/* 隐藏评论数标题 */
-#tcomment [class*="comment-count"],
-#tcomment [class*="comments-title"],
-#tcomment [class*="count-title"] {
-  display: none !important;
-}
-
-/* 隐藏操作系统/浏览器信息 */
-#tcomment [class*="os"],
-#tcomment [class*="browser"],
-#tcomment [class*="ua"],
-#tcomment [class*="user-agent"] {
-  display: none !important;
-}
-
-/* 隐藏管理齿轮、刷新按钮 */
-#tcomment [class*="admin"],
-#tcomment [class*="gear"],
-#tcomment [class*="setting"],
-#tcomment [class*="refresh"] {
-  display: none !important;
-}
-
 /* 分页按钮 */
 #tcomment [class*="pagination"] {
   margin-top: 20px !important;
   text-align: center !important;
-  background-color: transparent !important;
+  background: transparent !important;
 }
 
 #tcomment [class*="pagination"] button {
   color: #3b7a69 !important;
-  background-color: transparent !important;
+  background: transparent !important;
 }
 
 /* 空状态 */
@@ -910,7 +860,7 @@ main {
   padding: 40px 20px !important;
   color: #9aada4 !important;
   font-size: 0.9rem !important;
-  background-color: transparent !important;
+  background: transparent !important;
 }
 
 /* 加载中 */
@@ -918,7 +868,7 @@ main {
   text-align: center !important;
   padding: 30px !important;
   color: #9aada4 !important;
-  background-color: transparent !important;
+  background: transparent !important;
 }
 
 /* Config Bar for Waline Server URL */
