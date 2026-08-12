@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    觉察归位｜注意力静心训练站 - Core Design System & Global Styles
    ========================================================================== */
 
@@ -692,37 +692,17 @@ main {
   margin-bottom: 20px;
 }
 
-/* ===== 输入区：极简风格 ===== */
-/* 覆盖 Twikoo 默认深色背景（强制所有层级透明） */
-.share-input-card #tcomment,
-.share-input-card .twikoo,
-.share-input-card .twikoo > *,
-.share-input-card .twikoo > * > *,
-.share-input-card .twikoo * {
-  background: transparent !important;
+/* ===== Twikoo 纯 CSS 定制（不操作 DOM，避免与 Vue 冲突） ===== */
+
+/* 所有元素背景透明 */
+#tcomment,
+#tcomment * {
   background-color: transparent !important;
 }
 
-/* 隐藏头像 */
-.share-input-card .tk-avatar,
-.share-input-card .twikoo-avatar,
-.share-input-card .el-avatar {
-  display: none !important;
-}
-
-/* 昵称输入框全宽，隐藏邮箱和网址 */
-.share-input-card .el-input {
-  width: 100% !important;
-  margin-bottom: 14px !important;
-}
-
-.share-input-card .el-input:nth-of-type(2),
-.share-input-card .el-input:nth-of-type(3) {
-  display: none !important;
-}
-
-/* 昵称输入框：明显的白色背景 + 边框 */
-.share-input-card .el-input__inner {
+/* 输入框和文本域保留白色背景 */
+#tcomment input {
+  background-color: #ffffff !important;
   background: #ffffff !important;
   border: 1.5px solid #c8d8d0 !important;
   border-radius: 8px !important;
@@ -733,20 +713,35 @@ main {
   line-height: 1.5 !important;
 }
 
-.share-input-card .el-input__inner::placeholder {
-  color: #9aada4 !important;
+#tcomment textarea {
+  background-color: #f6f9f7 !important;
+  background: #f6f9f7 !important;
+  border: 1px solid #e2ebe6 !important;
+  border-radius: 10px !important;
+  color: #1f2a26 !important;
+  font-size: 0.95rem !important;
+  padding: 14px 16px !important;
+  min-height: 120px !important;
+  line-height: 1.7 !important;
+  resize: vertical !important;
 }
 
-.share-input-card .el-input__inner:focus {
+#tcomment input:focus,
+#tcomment textarea:focus {
   border-color: #3b7a69 !important;
   box-shadow: 0 0 0 3px rgba(59, 122, 105, 0.12) !important;
   outline: none !important;
 }
 
-/* 昵称输入框前缀标签（"昵称"二字） */
-.share-input-card .el-input-group__prepend,
-.share-input-card .el-input__prefix,
-.share-input-card .el-input-group--prepend .el-input__inner {
+#tcomment input::placeholder,
+#tcomment textarea::placeholder {
+  color: #9aada4 !important;
+}
+
+/* 昵称输入框前缀标签 */
+#tcomment .el-input-group__prepend,
+#tcomment .el-input__prefix {
+  background-color: #f0f5f2 !important;
   background: #f0f5f2 !important;
   color: #3b7a69 !important;
   border-color: #c8d8d0 !important;
@@ -754,201 +749,176 @@ main {
   font-size: 0.9rem !important;
 }
 
-/* 文本域 */
-.share-input-card .el-textarea__inner {
-  border-radius: 10px !important;
-  background: #f6f9f7 !important;
-  border: 1px solid #e2ebe6 !important;
-  min-height: 120px !important;
-  padding: 14px 16px !important;
-  font-size: 0.95rem !important;
-  line-height: 1.7 !important;
-  resize: vertical !important;
-  color: var(--text-main) !important;
-}
-
-.share-input-card .el-textarea__inner:focus {
-  border-color: #3b7a69 !important;
-  outline: none !important;
-  box-shadow: 0 0 0 3px rgba(59, 122, 105, 0.1) !important;
-}
-
-/* 隐藏表情、Markdown、预览等多余按钮 */
-.share-input-card [class*="emoji"],
-.share-input-card [class*="smile"],
-.share-input-card [class*="markdown"],
-.share-input-card [class*="preview"],
-.share-input-card .el-button--text {
+/* 隐藏邮箱、网址输入框 */
+#tcomment .el-input:nth-of-type(2),
+#tcomment .el-input:nth-of-type(3) {
   display: none !important;
 }
 
-/* 操作栏：只保留发送按钮和字数 */
-.share-input-card .tk-actions,
-.share-input-card .twikoo-actions {
-  justify-content: flex-end !important;
-  align-items: center !important;
-  margin-top: 14px !important;
-  gap: 12px !important;
+/* 隐藏头像 */
+#tcomment .el-avatar,
+#tcomment [class*="avatar"] {
+  display: none !important;
 }
 
-/* 字数统计 */
-.share-input-card .tk-word-limit,
-.share-input-card [class*="word"] {
-  color: var(--text-muted) !important;
-  font-size: 0.8rem !important;
-  order: -1 !important;
-  margin-right: auto !important;
+/* 隐藏表情、Markdown、预览按钮 */
+#tcomment [class*="emoji"],
+#tcomment [class*="smile"],
+#tcomment [class*="markdown"],
+#tcomment [class*="preview"],
+#tcomment .el-button--text {
+  display: none !important;
 }
 
-/* 发送按钮 */
-.share-input-card .tk-submit,
-.share-input-card .el-button--primary {
+/* 发送按钮保留绿色背景 */
+#tcomment .el-button--primary,
+#tcomment [class*="submit"] {
+  background-color: #3b7a69 !important;
   background: #3b7a69 !important;
   border-color: #3b7a69 !important;
   border-radius: 8px !important;
+  color: #ffffff !important;
   padding: 10px 32px !important;
   font-weight: 600 !important;
   font-size: 0.9rem !important;
   transition: all 0.2s ease !important;
 }
 
-.share-input-card .tk-submit:hover,
-.share-input-card .el-button--primary:hover {
+#tcomment .el-button--primary:hover,
+#tcomment [class*="submit"]:hover {
+  background-color: #2e6153 !important;
   background: #2e6153 !important;
   border-color: #2e6153 !important;
   transform: translateY(-1px) !important;
 }
 
-/* 输入区去掉多余 padding */
-.share-input-card .twikoo,
-.share-input-card #tcomment {
-  padding: 0 !important;
-  margin: 0 !important;
+/* 字数统计 */
+#tcomment [class*="word"],
+#tcomment [class*="limit"] {
+  color: #9aada4 !important;
+  font-size: 0.8rem !important;
 }
 
-/* ===== 评论列表：简洁卡片风格 ===== */
-.share-list-card .twikoo,
-.share-list-card #tcomment-list {
+/* ===== 评论列表样式 ===== */
+#tcomment .twikoo {
   padding: 0 !important;
   margin: 0 !important;
 }
 
 /* 每条评论 */
-.share-list-card .tk-comment,
-.share-list-card .twikoo-comment {
+#tcomment [class*="tk-comment"],
+#tcomment [class*="twikoo-comment"] {
   padding: 20px 0 !important;
   border-bottom: 1px solid #e8efeb !important;
+  background-color: transparent !important;
 }
 
-.share-list-card .tk-comment:last-child,
-.share-list-card .twikoo-comment:last-child {
+#tcomment [class*="tk-comment"]:last-child,
+#tcomment [class*="twikoo-comment"]:last-child {
   border-bottom: none !important;
 }
 
 /* 昵称 */
-.share-list-card .tk-nick,
-.share-list-card .twikoo-nick,
-.share-list-card .el-link {
+#tcomment [class*="tk-nick"],
+#tcomment [class*="twikoo-nick"],
+#tcomment .el-link {
   color: #3b7a69 !important;
   font-weight: 600 !important;
   font-size: 0.92rem !important;
   text-decoration: none !important;
+  background-color: transparent !important;
 }
 
 /* 时间 */
-.share-list-card .tk-time,
-.share-list-card .twikoo-time {
-  color: var(--text-muted) !important;
+#tcomment [class*="tk-time"],
+#tcomment [class*="twikoo-time"],
+#tcomment [class*="date"] {
+  color: #9aada4 !important;
   font-size: 0.78rem !important;
   margin-left: 10px !important;
+  background-color: transparent !important;
 }
 
 /* 评论内容 */
-.share-list-card .tk-content,
-.share-list-card .twikoo-content,
-.share-list-card .tk-comment-content {
-  color: var(--text-main) !important;
+#tcomment [class*="tk-content"],
+#tcomment [class*="twikoo-content"],
+#tcomment [class*="comment-content"] {
+  color: #1f2a26 !important;
   font-size: 0.93rem !important;
   line-height: 1.85 !important;
   margin-top: 8px !important;
+  background-color: transparent !important;
 }
 
-.share-list-card .tk-content p,
-.share-list-card .twikoo-content p {
+#tcomment [class*="tk-content"] p,
+#tcomment [class*="twikoo-content"] p {
   margin: 0 0 8px 0 !important;
+  background-color: transparent !important;
 }
 
-.share-list-card .tk-content p:last-child,
-.share-list-card .twikoo-content p:last-child {
+#tcomment [class*="tk-content"] p:last-child,
+#tcomment [class*="twikoo-content"] p:last-child {
   margin-bottom: 0 !important;
 }
 
-/* 头像 */
-.share-list-card .tk-avatar img,
-.share-list-card .twikoo-avatar img,
-.share-list-card .el-avatar img {
-  border-radius: 50% !important;
-  width: 36px !important;
-  height: 36px !important;
-}
-
-/* 隐藏点赞、回复、热门等社交元素（通用选择器，不限制标签类型） */
-.share-list-card [class*="like"],
-.share-list-card [class*="reply"],
-.share-list-card [class*="hot"],
-.share-list-card [class*="thumb"] {
+/* ===== 隐藏社交元素（去攀比原则） ===== */
+#tcomment [class*="like"],
+#tcomment [class*="reply"],
+#tcomment [class*="hot"],
+#tcomment [class*="thumb"] {
   display: none !important;
 }
 
-/* 隐藏评论数标题（如"1条评论"） */
-.share-list-card [class*="comment-count"],
-.share-list-card [class*="comments-title"],
-.share-list-card .tk-comments-title {
+/* 隐藏评论数标题 */
+#tcomment [class*="comment-count"],
+#tcomment [class*="comments-title"],
+#tcomment [class*="count-title"] {
   display: none !important;
 }
 
-/* 隐藏操作系统/浏览器信息（隐私 + 简洁） */
-.share-list-card [class*="os"],
-.share-list-card [class*="browser"],
-.share-list-card [class*="ua"],
-.share-list-card [class*="user-agent"] {
+/* 隐藏操作系统/浏览器信息 */
+#tcomment [class*="os"],
+#tcomment [class*="browser"],
+#tcomment [class*="ua"],
+#tcomment [class*="user-agent"] {
   display: none !important;
 }
 
-/* 隐藏列表中的管理齿轮、刷新按钮（管理入口已移到输入区） */
-.share-list-card [class*="admin"],
-.share-list-card [class*="gear"],
-.share-list-card [class*="setting"],
-.share-list-card [class*="refresh"] {
+/* 隐藏管理齿轮、刷新按钮 */
+#tcomment [class*="admin"],
+#tcomment [class*="gear"],
+#tcomment [class*="setting"],
+#tcomment [class*="refresh"] {
   display: none !important;
 }
 
 /* 分页按钮 */
-.share-list-card .tk-pagination,
-.share-list-card .el-pagination {
+#tcomment [class*="pagination"] {
   margin-top: 20px !important;
   text-align: center !important;
+  background-color: transparent !important;
 }
 
-.share-list-card .el-pagination button {
+#tcomment [class*="pagination"] button {
   color: #3b7a69 !important;
+  background-color: transparent !important;
 }
 
 /* 空状态 */
-.share-list-card .tk-empty,
-.share-list-card .twikoo-empty {
+#tcomment [class*="empty"] {
   text-align: center !important;
   padding: 40px 20px !important;
-  color: var(--text-muted) !important;
+  color: #9aada4 !important;
   font-size: 0.9rem !important;
+  background-color: transparent !important;
 }
 
 /* 加载中 */
-.share-list-card .tk-loading,
-.share-list-card .twikoo-loading {
+#tcomment [class*="loading"] {
   text-align: center !important;
   padding: 30px !important;
-  color: var(--text-muted) !important;
+  color: #9aada4 !important;
+  background-color: transparent !important;
 }
 
 /* Config Bar for Waline Server URL */
