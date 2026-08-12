@@ -669,73 +669,247 @@ main {
   50% { transform: scale(1.25); background: #cce9df; }
 }
 
-/* Twikoo Custom Quiet Theme Overrides */
-.twikoo-wrapper {
+/* ===== 学员心得分享：双卡片定制风格 ===== */
+.share-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: 32px;
+  padding: 28px 32px;
   box-shadow: var(--shadow-sm);
+  margin-bottom: 24px;
 }
 
-/* Twikoo 主题色覆盖 */
-.twikoo .tk-submit,
-.twikoo .el-button--primary {
-  background-color: #3b7a69 !important;
-  border-color: #3b7a69 !important;
+.share-card-title {
+  font-size: 1.15rem;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+  font-weight: 700;
 }
 
-.twikoo .tk-submit:hover,
-.twikoo .el-button--primary:hover {
-  background-color: #2e6153 !important;
-  border-color: #2e6153 !important;
+.share-card-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
 }
 
-.twikoo .tk-nick,
-.twikoo a {
-  color: #3b7a69 !important;
-}
-
-.twikoo .el-input__inner:focus,
-.twikoo .el-textarea__inner:focus {
-  border-color: #3b7a69 !important;
-}
-
-/* 去攀比：隐藏点赞按钮 */
-.twikoo .tk-like {
+/* ===== 输入区：极简风格 ===== */
+/* 隐藏头像 */
+.share-input-card .tk-avatar,
+.share-input-card .twikoo-avatar,
+.share-input-card .el-avatar {
   display: none !important;
 }
 
-/* 隐藏评论数/热度等社交指标（如存在） */
-.twikoo .tk-count {
+/* 昵称输入框全宽，隐藏邮箱和网址 */
+.share-input-card .el-input {
+  width: 100% !important;
+  margin-bottom: 12px !important;
+}
+
+.share-input-card .el-input:nth-of-type(2),
+.share-input-card .el-input:nth-of-type(3) {
   display: none !important;
 }
 
-/* Twikoo 输入区域圆角与配色微调 */
-.twikoo .el-input__inner,
-.twikoo .el-textarea__inner {
-  border-radius: 8px !important;
+/* 隐藏"必填"标记 */
+.share-input-card .el-input__inner::placeholder {
+  color: #a0b0a8 !important;
+}
+
+/* 文本域 */
+.share-input-card .el-textarea__inner {
+  border-radius: 10px !important;
   background: #f6f9f7 !important;
-  border-color: #e2ebe6 !important;
+  border: 1px solid #e2ebe6 !important;
+  min-height: 120px !important;
+  padding: 14px 16px !important;
+  font-size: 0.95rem !important;
+  line-height: 1.7 !important;
+  resize: vertical !important;
+  color: var(--text-main) !important;
 }
 
-.twikoo .el-textarea__inner {
-  min-height: 100px !important;
+.share-input-card .el-textarea__inner:focus {
+  border-color: #3b7a69 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(59, 122, 105, 0.1) !important;
 }
 
-/* 评论项间距 */
-.twikoo .tk-comment {
-  padding: 16px 0 !important;
-  border-bottom: 1px solid #e2ebe6 !important;
+/* 隐藏表情按钮 */
+.share-input-card .tk-emoji,
+.share-input-card .el-button--text,
+.share-input-card button[class*="emoji"] {
+  display: none !important;
 }
 
-.twikoo .tk-comment:last-child {
+/* 隐藏预览按钮 */
+.share-input-card .tk-preview,
+.share-input-card button[class*="preview"] {
+  display: none !important;
+}
+
+/* 操作栏：只保留发送按钮和字数 */
+.share-input-card .tk-actions,
+.share-input-card .twikoo-actions {
+  justify-content: flex-end !important;
+  align-items: center !important;
+  margin-top: 14px !important;
+  gap: 12px !important;
+}
+
+/* 字数统计 */
+.share-input-card .tk-word-limit,
+.share-input-card [class*="word"] {
+  color: var(--text-muted) !important;
+  font-size: 0.8rem !important;
+  order: -1 !important;
+  margin-right: auto !important;
+}
+
+/* 发送按钮 */
+.share-input-card .tk-submit,
+.share-input-card .el-button--primary {
+  background: #3b7a69 !important;
+  border-color: #3b7a69 !important;
+  border-radius: 8px !important;
+  padding: 10px 32px !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.share-input-card .tk-submit:hover,
+.share-input-card .el-button--primary:hover {
+  background: #2e6153 !important;
+  border-color: #2e6153 !important;
+  transform: translateY(-1px) !important;
+}
+
+/* 输入区去掉多余 padding */
+.share-input-card .twikoo,
+.share-input-card #tcomment {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* ===== 评论列表：简洁卡片风格 ===== */
+.share-list-card .twikoo,
+.share-list-card #tcomment-list {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 每条评论 */
+.share-list-card .tk-comment,
+.share-list-card .twikoo-comment {
+  padding: 20px 0 !important;
+  border-bottom: 1px solid #e8efeb !important;
+}
+
+.share-list-card .tk-comment:last-child,
+.share-list-card .twikoo-comment:last-child {
   border-bottom: none !important;
 }
 
-/* 头像圆角 */
-.twikoo .tk-avatar img {
+/* 昵称 */
+.share-list-card .tk-nick,
+.share-list-card .twikoo-nick,
+.share-list-card .el-link {
+  color: #3b7a69 !important;
+  font-weight: 600 !important;
+  font-size: 0.92rem !important;
+  text-decoration: none !important;
+}
+
+/* 时间 */
+.share-list-card .tk-time,
+.share-list-card .twikoo-time {
+  color: var(--text-muted) !important;
+  font-size: 0.78rem !important;
+  margin-left: 10px !important;
+}
+
+/* 评论内容 */
+.share-list-card .tk-content,
+.share-list-card .twikoo-content,
+.share-list-card .tk-comment-content {
+  color: var(--text-main) !important;
+  font-size: 0.93rem !important;
+  line-height: 1.85 !important;
+  margin-top: 8px !important;
+}
+
+.share-list-card .tk-content p,
+.share-list-card .twikoo-content p {
+  margin: 0 0 8px 0 !important;
+}
+
+.share-list-card .tk-content p:last-child,
+.share-list-card .twikoo-content p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* 头像 */
+.share-list-card .tk-avatar img,
+.share-list-card .twikoo-avatar img,
+.share-list-card .el-avatar img {
   border-radius: 50% !important;
+  width: 36px !important;
+  height: 36px !important;
+}
+
+/* 隐藏点赞 */
+.share-list-card .tk-like,
+.share-list-card button[class*="like"] {
+  display: none !important;
+}
+
+/* 隐藏回复按钮（去社交） */
+.share-list-card .tk-reply,
+.share-list-card button[class*="reply"] {
+  display: none !important;
+}
+
+/* 隐藏评论数标题/热度 */
+.share-list-card .tk-comments-title,
+.share-list-card .twikoo-comments-title,
+.share-list-card [class*="count"],
+.share-list-card [class*="title"] {
+  display: none !important;
+}
+
+/* 隐藏管理齿轮（列表中） */
+.share-list-card .tk-admin-btn,
+.share-list-card [class*="admin"] {
+  display: none !important;
+}
+
+/* 分页按钮 */
+.share-list-card .tk-pagination,
+.share-list-card .el-pagination {
+  margin-top: 20px !important;
+  text-align: center !important;
+}
+
+.share-list-card .el-pagination button {
+  color: #3b7a69 !important;
+}
+
+/* 空状态 */
+.share-list-card .tk-empty,
+.share-list-card .twikoo-empty {
+  text-align: center !important;
+  padding: 40px 20px !important;
+  color: var(--text-muted) !important;
+  font-size: 0.9rem !important;
+}
+
+/* 加载中 */
+.share-list-card .tk-loading,
+.share-list-card .twikoo-loading {
+  text-align: center !important;
+  padding: 30px !important;
+  color: var(--text-muted) !important;
 }
 
 /* Config Bar for Waline Server URL */
