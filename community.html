@@ -4,10 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>学员心得｜匿名觉察感悟倾诉区 - 觉察归位</title>
-  <meta name="description" content="学员心得分享区：挂载 Waline 极简留言系统。无点赞、无热度排行、支持匿名，安全倾诉你的觉察与成长。">
+  <meta name="description" content="学员心得分享区：挂载 Twikoo 极简留言系统。无点赞、无热度排行、支持匿名，安全倾诉你的觉察与成长。">
   <link rel="stylesheet" href="css/style.css">
-  <!-- Waline Client CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css"/>
 </head>
 <body>
 
@@ -59,9 +57,9 @@
         <span id="shareModeStatus"></span>
       </div>
 
-      <!-- Waline Container -->
-      <section class="waline-wrapper">
-        <div id="waline"></div>
+      <!-- Twikoo Container -->
+      <section class="twikoo-wrapper">
+        <div id="tcomment"></div>
       </section>
 
     </div>
@@ -81,9 +79,9 @@
     </div>
   </footer>
 
-  <!-- Waline Client JS SDK with fallback -->
-  <script src="https://unpkg.com/@waline/client@v3/dist/waline.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.js';"></script>
+  <!-- Twikoo Client JS SDK with fallback -->
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1/dist/twikoo.all.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/twikoo@1/dist/twikoo.all.min.js';"></script>
   <script src="js/main.js"></script>
-  <script src="js/waline-config.js"></script>
+  <script src="js/twikoo-config.js"></script>
 </body>
 </html>

@@ -669,23 +669,73 @@ main {
   50% { transform: scale(1.25); background: #cce9df; }
 }
 
-/* Waline Custom Quiet Theme Overrides */
-:root {
-  --waline-theme-color: #3b7a69 !important;
-  --waline-active-color: #2e6153 !important;
-  --waline-bg-color: #ffffff !important;
-  --waline-bg-color-light: #f6f9f7 !important;
-  --waline-border-color: #e2ebe6 !important;
-  --waline-text-color: #34433d !important;
-  --waline-bgcolor: #f6f9f7 !important;
-}
-
-.waline-wrapper {
+/* Twikoo Custom Quiet Theme Overrides */
+.twikoo-wrapper {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: 32px;
   box-shadow: var(--shadow-sm);
+}
+
+/* Twikoo 主题色覆盖 */
+.twikoo .tk-submit,
+.twikoo .el-button--primary {
+  background-color: #3b7a69 !important;
+  border-color: #3b7a69 !important;
+}
+
+.twikoo .tk-submit:hover,
+.twikoo .el-button--primary:hover {
+  background-color: #2e6153 !important;
+  border-color: #2e6153 !important;
+}
+
+.twikoo .tk-nick,
+.twikoo a {
+  color: #3b7a69 !important;
+}
+
+.twikoo .el-input__inner:focus,
+.twikoo .el-textarea__inner:focus {
+  border-color: #3b7a69 !important;
+}
+
+/* 去攀比：隐藏点赞按钮 */
+.twikoo .tk-like {
+  display: none !important;
+}
+
+/* 隐藏评论数/热度等社交指标（如存在） */
+.twikoo .tk-count {
+  display: none !important;
+}
+
+/* Twikoo 输入区域圆角与配色微调 */
+.twikoo .el-input__inner,
+.twikoo .el-textarea__inner {
+  border-radius: 8px !important;
+  background: #f6f9f7 !important;
+  border-color: #e2ebe6 !important;
+}
+
+.twikoo .el-textarea__inner {
+  min-height: 100px !important;
+}
+
+/* 评论项间距 */
+.twikoo .tk-comment {
+  padding: 16px 0 !important;
+  border-bottom: 1px solid #e2ebe6 !important;
+}
+
+.twikoo .tk-comment:last-child {
+  border-bottom: none !important;
+}
+
+/* 头像圆角 */
+.twikoo .tk-avatar img {
+  border-radius: 50% !important;
 }
 
 /* Config Bar for Waline Server URL */
