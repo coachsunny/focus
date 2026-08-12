@@ -693,10 +693,13 @@ main {
 }
 
 /* ===== 输入区：极简风格 ===== */
-/* 覆盖 Twikoo 默认深色背景 */
+/* 覆盖 Twikoo 默认深色背景（强制所有层级透明） */
+.share-input-card #tcomment,
 .share-input-card .twikoo,
-.share-input-card .twikoo > div,
+.share-input-card .twikoo > *,
+.share-input-card .twikoo > * > *,
 .share-input-card .twikoo * {
+  background: transparent !important;
   background-color: transparent !important;
 }
 
@@ -770,16 +773,12 @@ main {
   box-shadow: 0 0 0 3px rgba(59, 122, 105, 0.1) !important;
 }
 
-/* 隐藏表情按钮 */
-.share-input-card .tk-emoji,
-.share-input-card .el-button--text,
-.share-input-card button[class*="emoji"] {
-  display: none !important;
-}
-
-/* 隐藏预览按钮 */
-.share-input-card .tk-preview,
-.share-input-card button[class*="preview"] {
+/* 隐藏表情、Markdown、预览等多余按钮 */
+.share-input-card [class*="emoji"],
+.share-input-card [class*="smile"],
+.share-input-card [class*="markdown"],
+.share-input-card [class*="preview"],
+.share-input-card .el-button--text {
   display: none !important;
 }
 
@@ -893,29 +892,34 @@ main {
   height: 36px !important;
 }
 
-/* 隐藏点赞 */
-.share-list-card .tk-like,
-.share-list-card button[class*="like"] {
+/* 隐藏点赞、回复、热门等社交元素（通用选择器，不限制标签类型） */
+.share-list-card [class*="like"],
+.share-list-card [class*="reply"],
+.share-list-card [class*="hot"],
+.share-list-card [class*="thumb"] {
   display: none !important;
 }
 
-/* 隐藏回复按钮（去社交） */
-.share-list-card .tk-reply,
-.share-list-card button[class*="reply"] {
+/* 隐藏评论数标题（如"1条评论"） */
+.share-list-card [class*="comment-count"],
+.share-list-card [class*="comments-title"],
+.share-list-card .tk-comments-title {
   display: none !important;
 }
 
-/* 隐藏评论数标题/热度 */
-.share-list-card .tk-comments-title,
-.share-list-card .twikoo-comments-title,
-.share-list-card [class*="count"],
-.share-list-card [class*="title"] {
+/* 隐藏操作系统/浏览器信息（隐私 + 简洁） */
+.share-list-card [class*="os"],
+.share-list-card [class*="browser"],
+.share-list-card [class*="ua"],
+.share-list-card [class*="user-agent"] {
   display: none !important;
 }
 
-/* 隐藏管理齿轮（列表中） */
-.share-list-card .tk-admin-btn,
-.share-list-card [class*="admin"] {
+/* 隐藏列表中的管理齿轮、刷新按钮（管理入口已移到输入区） */
+.share-list-card [class*="admin"],
+.share-list-card [class*="gear"],
+.share-list-card [class*="setting"],
+.share-list-card [class*="refresh"] {
   display: none !important;
 }
 
