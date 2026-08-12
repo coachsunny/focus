@@ -157,6 +157,22 @@ function hideUnwantedElements() {
       el.style.setProperty('display', 'none', 'important');
     });
   });
+
+  // 确保发送按钮显示（防止被误隐藏）
+  const sendBtn = container.querySelector('.tk-send');
+  if (sendBtn) {
+    sendBtn.style.setProperty('display', 'inline-block', 'important');
+    sendBtn.style.setProperty('visibility', 'visible', 'important');
+    sendBtn.style.setProperty('opacity', '1', 'important');
+  }
+
+  // 确保操作栏容器显示（发送按钮的父容器）
+  const actionsRow = container.querySelector('.tk-row.actions');
+  if (actionsRow) {
+    actionsRow.style.setProperty('display', 'flex', 'important');
+    actionsRow.style.setProperty('justify-content', 'flex-end', 'important');
+    actionsRow.style.setProperty('margin-top', '12px', 'important');
+  }
 }
 
 function showErrorState(container, statusBadge, message) {

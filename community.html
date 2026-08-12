@@ -65,9 +65,18 @@
       display: none !important;
     }
 
-    /* 保留发送按钮 */
+    /* 保留发送按钮（强制显示，防止被误隐藏） */
     .twikoo .tk-send {
       display: inline-block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    /* 确保操作栏容器显示（发送按钮的父容器） */
+    .twikoo .tk-row.actions {
+      display: flex !important;
+      justify-content: flex-end !important;
+      margin-top: 12px !important;
     }
 
     /* 背景透明 */
