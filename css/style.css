@@ -703,13 +703,18 @@ main {
 
 /* ===== 暴力隐藏多余元素（不依赖 class 名） ===== */
 
-/* 1. 隐藏所有 img（头像、图标） */
-#tcomment img {
+/* 1. 隐藏所有图片、SVG、图标（头像、表情、点赞、回复等图标） */
+#tcomment img,
+#tcomment svg,
+#tcomment i,
+#tcomment [class*="icon"],
+#tcomment [class*="Icon"] {
   display: none !important;
 }
 
 /* 2. 隐藏所有非主要按钮（表情、预览、点赞、回复、删除、刷新、设置） */
-#tcomment button:not(.el-button--primary):not([class*="submit"]) {
+#tcomment button:not(.el-button--primary):not([class*="submit"]),
+#tcomment [class*="btn"]:not(.el-button--primary):not([class*="submit"]) {
   display: none !important;
 }
 
@@ -720,10 +725,11 @@ main {
 }
 
 /* 4. 隐藏所有链接（排序、操作等），昵称链接单独恢复 */
-#tcomment a {
+#tcomment a,
+#tcomment [class*="link"] {
   display: none !important;
 }
-/* 恢复昵称链接（通常在评论头部） */
+/* 恢复昵称链接 */
 #tcomment [class*="nick"] a,
 #tcomment [class*="nick"],
 #tcomment .el-link {

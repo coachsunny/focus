@@ -6,6 +6,38 @@
   <title>学员心得｜匿名觉察感悟倾诉区 - 觉察归位</title>
   <meta name="description" content="学员心得分享区：挂载 Twikoo 极简留言系统。无点赞、无热度排行、支持匿名，安全倾诉你的觉察与成长。">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ===== Twikoo 暴力隐藏（内联，确保加载） ===== */
+    #tcomment img, #tcomment svg, #tcomment i,
+    #tcomment [class*="icon"], #tcomment [class*="Icon"] {
+      display: none !important;
+    }
+    #tcomment button:not(.el-button--primary):not([class*="submit"]),
+    #tcomment [class*="btn"]:not(.el-button--primary):not([class*="submit"]) {
+      display: none !important;
+    }
+    #tcomment input[type="email"], #tcomment input[type="url"] {
+      display: none !important;
+    }
+    #tcomment a, #tcomment [class*="link"] {
+      display: none !important;
+    }
+    #tcomment [class*="nick"], #tcomment [class*="nick"] a, #tcomment .el-link {
+      display: inline !important;
+    }
+    #tcomment [class*="sort"], #tcomment [class*="toolbar"], #tcomment [class*="header"],
+    #tcomment [class*="count"], #tcomment [class*="title"],
+    #tcomment [class*="os"], #tcomment [class*="browser"], #tcomment [class*="ua"],
+    #tcomment [class*="powered"], #tcomment [class*="copyright"], #tcomment [class*="footer"],
+    #tcomment [class*="actions"], #tcomment [class*="action"], #tcomment [class*="like"],
+    #tcomment [class*="reply"], #tcomment [class*="thumb"],
+    #tcomment [class*="emoji"], #tcomment [class*="smile"], #tcomment [class*="preview"],
+    #tcomment [class*="avatar"], #tcomment .el-avatar,
+    #tcomment [class*="admin"], #tcomment [class*="setting"], #tcomment [class*="gear"],
+    #tcomment [class*="refresh"] {
+      display: none !important;
+    }
+  </style>
 </head>
 <body>
 
