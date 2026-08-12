@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>评论管理后台｜觉察归位</title>
+  <meta name="description" content="学员心得评论管理后台，仅管理员可访问。">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* 管理页面不隐藏任何 Twikoo 元素 */
+    .admin-notice {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      font-size: 0.93rem;
+      color: #856404;
+    }
+    .admin-notice strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Navigation -->
+  <header class="site-header">
+    <div class="container nav-wrapper">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-icon">🌿</div>
+        <div>
+          <span class="brand-text">觉察归位</span>
+          <span class="brand-tag">注意力静心站</span>
+        </div>
+      </a>
+      <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="切换菜单">☰</button>
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html" class="nav-link">首页</a>
+        <a href="handbook.html" class="nav-link">觉察手册</a>
+        <a href="tools.html" class="nav-link">辅助工具</a>
+        <a href="community.html" class="nav-link">学员心得</a>
+        <a href="training.html" class="nav-link">阶梯训练</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="container-narrow">
+
+      <div class="article-header">
+        <span class="hero-tagline">🔧 评论管理后台</span>
+        <h1 class="article-title">学员心得 · 评论管理</h1>
+        <p class="article-meta">此页面仅用于管理员审核和删除评论，不对普通访客公开。</p>
+      </div>
+
+      <div class="admin-notice">
+        <strong>📌 使用说明</strong>
+        1. 点击评论区右上角的 ⚙️ 齿轮图标，设置或输入管理员密码登录。<br>
+        2. 登录后，每条评论下方会出现 🗑️ 删除按钮。<br>
+        3. 也可以在此页面直接回复评论。<br>
+        4. 普通访客访问 <a href="community.html">学员心得页面</a> 看不到这些管理按钮。
+      </div>
+
+      <!-- 状态指示器 -->
+      <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+        <span id="shareModeStatus"></span>
+      </div>
+
+      <!-- Twikoo 评论区（完整功能，不隐藏任何元素） -->
+      <section class="share-card">
+        <h3 class="share-card-title">💬 评论管理</h3>
+        <p class="share-card-subtitle">完整 Twikoo 功能，包含管理操作</p>
+        <div id="tcomment"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>觉察自愈 · 归位注意力 · 回归真实生活</p>
+      <div class="footer-links">
+        <a href="index.html">首页</a> ·
+        <a href="handbook.html">觉察手册</a> ·
+        <a href="tools.html">辅助工具</a> ·
+        <a href="community.html">学员心得</a> ·
+        <a href="training.html">阶梯训练</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Twikoo Client JS SDK with fallback -->
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1/dist/twikoo.all.min.js" onerror="this.onerror=null;this.src='https://unpkg.com/twikoo@1/dist/twikoo.all.min.js';"></script>
+  <script src="js/main.js"></script>
+
+  <!-- 管理页面专用 Twikoo 初始化（不执行隐藏逻辑） -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const container = document.getElementById('tcomment');
+      if (!container) return;
+
+      const statusBadge = document.getElementById('shareModeStatus');
+      const envId = 'https://twikoo-chi-swart-85.vercel.app/';
+
+      if (statusBadge) {
+        statusBadge.innerHTML = '<span class="share-mode-tag mode-cloud">🔄 正在连接...</span>';
+      }
+
+      if (typeof twikoo !== 'undefined' && typeof twikoo.init === 'function') {
+        try {
+          await twikoo.init({
+            envId: envId,
+            el: '#tcomment',
+            lang: 'zh-CN',
+            path: '/community.html',
+            placeholder: '在此写下你此刻的静心觉察或复盘感悟...',
+            noComment: '还没有心得分享',
+            commentSort: 1,
+            enableQQ: false,
+            enableImageUpload: false,
+          });
+
+          if (statusBadge) {
+            statusBadge.innerHTML = '<span class="share-mode-tag mode-cloud">🌐 已连接 · 管理模式</span>';
+          }
+        } catch (err) {
+          console.warn('Twikoo init failed:', err);
+          if (statusBadge) {
+            statusBadge.innerHTML = '<span class="share-mode-tag mode-cloud">⚠️ 加载异常</span>';
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
