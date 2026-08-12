@@ -66,9 +66,13 @@ async function initTwikooComments() {
       // 等待 DOM 渲染后，分离输入区和评论列表
       setTimeout(separateInputAndList, 600);
       setTimeout(fillAnonymousEmail, 600);
+      setTimeout(forceStyleOverride, 600);
       // 评论是异步加载的，再等久一点确保列表渲染
       setTimeout(separateInputAndList, 1500);
       setTimeout(fillAnonymousEmail, 1500);
+      setTimeout(forceStyleOverride, 1500);
+      // 第三次确保覆盖（Twikoo 可能多次重渲染）
+      setTimeout(forceStyleOverride, 3000);
 
     } catch (err) {
       console.warn('Twikoo init failed:', err);
@@ -150,6 +154,79 @@ function fillAnonymousEmail() {
       emailInput.dispatchEvent(new Event('input', { bubbles: true }));
       emailInput.dispatchEvent(new Event('change', { bubbles: true }));
     }
+  }
+}
+
+/**
+ * 强制覆盖 Twikoo 样式（JS 内联样式，优先级最高）
+ * 解决 CSS 选择器无法匹配 Twikoo 动态 DOM 的问题
+ */
+function forceStyleOverride() {
+  // ===== 1. 输入区：强制背景透明 =====
+  const inputCard = document.querySelector('.share-input-card');
+  if (inputCard) {
+    const allEls = inputCard.querySelectorAll('*');
+    allEls.forEach(el => {
+      const tag = el.tagName.toLowerCase();
+      // 跳过输入框和文本域，保留白色背景
+      if (tag === 'input' || tag === 'textarea' ||
+          el.classList.contains('el-input__inner') ||
+          el.classList.contains('el-textarea__inner')) {
+        return;
+      }
+      // 跳过发送按钮，保留绿色背景
+      if (el.classList.contains('el-button--primary') ||
+          el.classList.contains('tk-submit') ||
+          (tag === 'button' && el.textContent.includes('发送'))) {
+        return;
+      }
+      el.style.backgroundColor = 'transparent';
+      el.style.background = 'transparent';
+    });
+
+    // ===== 2. 输入区：隐藏表情、Markdown 按钮 =====
+    inputCard.querySelectorAll('button, a, span, div').forEach(el => {
+      const cls = (el.className || '').toString();
+      const text = el.textContent.trim();
+      if (cls.includes('emoji') || cls.includes('smile') ||
+          cls.includes('markdown') || cls.includes('preview') ||
+          text === 'M↓' || text === '预览') {
+        el.style.display = 'none';
+      }
+    });
+  }
+
+  // ===== 3. 评论区：隐藏社交元素 =====
+  const listCard = document.querySelector('.share-list-card');
+  if (listCard) {
+    listCard.querySelectorAll('*').forEach(el => {
+      const cls = (el.className || '').toString();
+      const text = el.textContent.trim();
+
+      // 隐藏点赞、回复、热门
+      if (cls.includes('like') || cls.includes('reply') ||
+          cls.includes('hot') || cls.includes('thumb')) {
+        el.style.display = 'none';
+      }
+      // 隐藏"热门"文本链接
+      if (text === '热门' && el.children.length === 0) {
+        el.style.display = 'none';
+      }
+      // 隐藏操作系统/浏览器信息
+      if (cls.includes('os') || cls.includes('browser') ||
+          cls.includes('ua') || cls.includes('user-agent')) {
+        el.style.display = 'none';
+      }
+      // 隐藏评论数标题（如"1条评论"）
+      if (text.includes('条评论') && el.children.length <= 1) {
+        el.style.display = 'none';
+      }
+      // 隐藏刷新、设置、管理齿轮
+      if (cls.includes('refresh') || cls.includes('setting') ||
+          cls.includes('gear') || cls.includes('admin')) {
+        el.style.display = 'none';
+      }
+    });
   }
 }
 
