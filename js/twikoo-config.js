@@ -63,14 +63,14 @@ async function initTwikooComments() {
       }
 
       // 自动填充匿名邮箱（解决发送按钮灰色问题）
-      // 延迟执行，等 Twikoo 渲染完输入框
       setTimeout(fillAnonymousEmail, 800);
       setTimeout(fillAnonymousEmail, 2000);
 
-      // 隐藏不需要的元素（头像、邮箱框、表情、点赞等）
+      // 启动 MutationObserver 持续监听，新元素一出现就自动隐藏
+      startHideObserver();
+      // 初始执行几次
       setTimeout(hideUnwantedElements, 1000);
       setTimeout(hideUnwantedElements, 2500);
-      setTimeout(hideUnwantedElements, 4000);
 
     } catch (err) {
       console.warn('Twikoo init failed:', err);
@@ -99,8 +99,41 @@ function fillAnonymousEmail() {
 }
 
 /**
+ * 启动 MutationObserver，持续监听 Twikoo DOM 变化
+ * 新元素一出现就自动隐藏，只做 display:none，不移动 DOM，避免与 Vue 冲突
+ */
+function startHideObserver() {
+  const container = document.getElementById('tcomment');
+  if (!container) return;
+
+  const observer = new MutationObserver(() => {
+    clearTimeout(window._hideTimer);
+    window._hideTimer = setTimeout(hideUnwantedElements, 100);
+  });
+
+  observer.observe(container, {
+    childList: true,
+    subtree: true,
+    attributes: false,
+  });
+}
+
+/**
+ * 安全获取元素的 class 字符串（兼容 SVG 元素）
+ */
+function getClassStr(el) {
+  if (!el) return '';
+  // 优先用 getAttribute，兼容 SVG（SVG 的 className 是对象不是字符串）
+  const cls = el.getAttribute && el.getAttribute('class');
+  if (cls) return cls.toLowerCase();
+  if (el.className && typeof el.className === 'string') {
+    return el.className.toLowerCase();
+  }
+  return '';
+}
+
+/**
  * 隐藏不需要的元素（只设 display:none，不移动 DOM，避免与 Vue 冲突）
- * 隐藏：头像、邮箱/网址输入框、表情、预览、点赞、回复、热门、评论数、操作系统信息、Powered by Twikoo
  */
 function hideUnwantedElements() {
   const container = document.getElementById('tcomment');
@@ -109,34 +142,33 @@ function hideUnwantedElements() {
   const allEls = container.querySelectorAll('*');
 
   allEls.forEach(el => {
-    const cls = (el.className || '').toString();
+    const cls = getClassStr(el);
     const text = el.textContent.trim();
     const tag = el.tagName.toLowerCase();
 
     // 隐藏头像
-    if (cls.toLowerCase().includes('avatar')) {
+    if (cls.includes('avatar')) {
       el.style.display = 'none';
     }
 
     // 隐藏表情按钮
-    if (cls.toLowerCase().includes('emoji') || cls.toLowerCase().includes('smile')) {
+    if (cls.includes('emoji') || cls.includes('smile')) {
       el.style.display = 'none';
     }
 
     // 隐藏预览、Markdown 按钮
-    if (cls.toLowerCase().includes('preview') || cls.toLowerCase().includes('markdown') ||
+    if (cls.includes('preview') || cls.includes('markdown') ||
         text === '预览' || text === 'M↓') {
       el.style.display = 'none';
     }
 
     // 隐藏点赞、回复
-    if (cls.toLowerCase().includes('like') || cls.toLowerCase().includes('reply') ||
-        cls.toLowerCase().includes('thumb')) {
+    if (cls.includes('like') || cls.includes('reply') || cls.includes('thumb')) {
       el.style.display = 'none';
     }
 
     // 隐藏热门
-    if (cls.toLowerCase().includes('hot') || (text === '热门' && el.children.length === 0)) {
+    if (cls.includes('hot') || (text === '热门' && el.children.length === 0)) {
       el.style.display = 'none';
     }
 
@@ -146,14 +178,14 @@ function hideUnwantedElements() {
     }
 
     // 隐藏操作系统/浏览器信息
-    if (cls.toLowerCase().includes('os') || cls.toLowerCase().includes('browser') ||
-        cls.toLowerCase().includes('ua') || cls.toLowerCase().includes('user-agent')) {
+    if (cls.includes('os') || cls.includes('browser') ||
+        cls.includes('ua') || cls.includes('user-agent')) {
       el.style.display = 'none';
     }
 
     // 隐藏刷新、设置、管理齿轮
-    if (cls.toLowerCase().includes('refresh') || cls.toLowerCase().includes('setting') ||
-        cls.toLowerCase().includes('gear') || cls.toLowerCase().includes('admin')) {
+    if (cls.includes('refresh') || cls.includes('setting') ||
+        cls.includes('gear') || cls.includes('admin')) {
       el.style.display = 'none';
     }
 
@@ -167,7 +199,6 @@ function hideUnwantedElements() {
   const inputs = container.querySelectorAll('input');
   if (inputs.length >= 3) {
     [inputs[1], inputs[2]].forEach(input => {
-      // 找到最近的输入框容器并隐藏
       let wrapper = input.closest('.el-input, .el-input-group, [class*="input"]');
       if (wrapper) {
         wrapper.style.display = 'none';
