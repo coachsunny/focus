@@ -66,11 +66,11 @@ async function initTwikooComments() {
       setTimeout(fillAnonymousEmail, 800);
       setTimeout(fillAnonymousEmail, 2000);
 
-      // 启动 MutationObserver 持续监听，新元素一出现就自动隐藏
-      startHideObserver();
-      // 初始执行几次
+      // 多次执行隐藏，确保 Twikoo 渲染完成后所有多余元素都被隐藏
+      // 不用 MutationObserver，避免与 Vue 渲染冲突
       setTimeout(hideUnwantedElements, 1000);
       setTimeout(hideUnwantedElements, 2500);
+      setTimeout(hideUnwantedElements, 4000);
 
     } catch (err) {
       console.warn('Twikoo init failed:', err);
