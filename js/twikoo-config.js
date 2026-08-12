@@ -87,7 +87,7 @@ async function initTwikooComments() {
  * 新元素一出现就自动隐藏，只做 display:none，不移动 DOM，避免与 Vue 冲突
  */
 function startHideObserver() {
-  const container = document.getElementById('tcomment');
+  const container = document.querySelector('.twikoo');
   if (!container) return;
 
   const observer = new MutationObserver(() => {
@@ -106,7 +106,7 @@ function startHideObserver() {
  * 自动填充匿名邮箱（Twikoo 默认邮箱必填，隐藏后需自动填值）
  */
 function fillAnonymousEmail() {
-  const inputs = document.querySelectorAll('#tcomment input');
+  const inputs = document.querySelectorAll('.twikoo input');
   if (inputs.length >= 2) {
     const emailInput = inputs[1];
     if (!emailInput.value) {
@@ -131,7 +131,7 @@ function hideEl(el) {
  * 大部分隐藏已由 CSS 完成，这里只做补充
  */
 function hideUnwantedElements() {
-  const container = document.getElementById('tcomment');
+  const container = document.querySelector('.twikoo');
   if (!container) return;
 
   // 隐藏包含特定文本的元素（CSS 无法根据文本选择）

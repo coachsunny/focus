@@ -7,35 +7,80 @@
   <meta name="description" content="学员心得分享区：挂载 Twikoo 极简留言系统。无点赞、无热度排行、支持匿名，安全倾诉你的觉察与成长。">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    /* ===== Twikoo 暴力隐藏（内联，确保加载） ===== */
-    #tcomment img, #tcomment svg, #tcomment i,
-    #tcomment [class*="icon"], #tcomment [class*="Icon"] {
+    /* ===== Twikoo 精准隐藏（基于真实 DOM 结构） ===== */
+    /* 容器是 .twikoo / #twikoo，不是 #tcomment */
+
+    /* 1. 隐藏头像 */
+    .twikoo .tk-avatar {
       display: none !important;
     }
-    #tcomment button:not(.el-button--primary):not([class*="submit"]),
-    #tcomment [class*="btn"]:not(.el-button--primary):not([class*="submit"]) {
+
+    /* 2. 隐藏邮箱和网址输入框（第2、3个 el-input-group） */
+    .twikoo .tk-meta-input .el-input-group:nth-child(2),
+    .twikoo .tk-meta-input .el-input-group:nth-child(3) {
       display: none !important;
     }
-    #tcomment input[type="email"], #tcomment input[type="url"] {
+
+    /* 3. 隐藏表情按钮 */
+    .twikoo .OwO,
+    .twikoo .tk-submit-action-icon {
       display: none !important;
     }
-    #tcomment a, #tcomment [class*="link"] {
+
+    /* 4. 隐藏 Markdown 和预览按钮 */
+    .twikoo .__markdown,
+    .twikoo .tk-preview {
       display: none !important;
     }
-    #tcomment [class*="nick"], #tcomment [class*="nick"] a, #tcomment .el-link {
-      display: inline !important;
-    }
-    #tcomment [class*="sort"], #tcomment [class*="toolbar"], #tcomment [class*="header"],
-    #tcomment [class*="count"], #tcomment [class*="title"],
-    #tcomment [class*="os"], #tcomment [class*="browser"], #tcomment [class*="ua"],
-    #tcomment [class*="powered"], #tcomment [class*="copyright"], #tcomment [class*="footer"],
-    #tcomment [class*="actions"], #tcomment [class*="action"], #tcomment [class*="like"],
-    #tcomment [class*="reply"], #tcomment [class*="thumb"],
-    #tcomment [class*="emoji"], #tcomment [class*="smile"], #tcomment [class*="preview"],
-    #tcomment [class*="avatar"], #tcomment .el-avatar,
-    #tcomment [class*="admin"], #tcomment [class*="setting"], #tcomment [class*="gear"],
-    #tcomment [class*="refresh"] {
+
+    /* 5. 隐藏评论数标题和排序栏 */
+    .twikoo .tk-comments-title,
+    .twikoo .tk-comments-sort,
+    .twikoo .tk-comments-actions .tk-icon {
       display: none !important;
+    }
+
+    /* 6. 隐藏评论操作按钮（点赞、回复、删除） */
+    .twikoo .tk-action {
+      display: none !important;
+    }
+
+    /* 7. 隐藏操作系统/浏览器信息 */
+    .twikoo .tk-extras {
+      display: none !important;
+    }
+
+    /* 8. 隐藏底部版权 */
+    .twikoo .tk-footer {
+      display: none !important;
+    }
+
+    /* 9. 隐藏管理后台容器 */
+    .twikoo .tk-admin-container {
+      display: none !important;
+    }
+
+    /* 10. 隐藏图片上传 input */
+    .twikoo .tk-input-image {
+      display: none !important;
+    }
+
+    /* 保留发送按钮 */
+    .twikoo .tk-send {
+      display: inline-block !important;
+    }
+
+    /* 背景透明 */
+    .twikoo, .twikoo * {
+      background: transparent !important;
+      background-color: transparent !important;
+    }
+
+    /* 输入框和文本域保留白色背景 */
+    .twikoo input,
+    .twikoo textarea {
+      background: #ffffff !important;
+      background-color: #ffffff !important;
     }
   </style>
 </head>
