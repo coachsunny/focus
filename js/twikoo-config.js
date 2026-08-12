@@ -127,50 +127,35 @@ function hideEl(el) {
 }
 
 /**
- * 隐藏 CSS 无法处理的元素（主要靠文本匹配）
- * 大部分隐藏已由 CSS 完成，这里只做补充
+ * 隐藏所有多余元素（基于真实 DOM 结构的精准 class 选择器）
+ * 直接用 JS 设置 display:none !important，不依赖 CSS
  */
 function hideUnwantedElements() {
   const container = document.querySelector('.twikoo');
   if (!container) return;
 
-  // 隐藏包含特定文本的元素（CSS 无法根据文本选择）
-  container.querySelectorAll('*').forEach(el => {
-    const text = el.textContent.trim();
-    if (el.children.length > 5) return;
+  // 需要隐藏的元素选择器列表（基于真实 DOM 结构）
+  const selectors = [
+    '.tk-avatar',                    // 头像
+    '.tk-meta-input .el-input-group:nth-child(2)',  // 邮箱输入框组
+    '.tk-meta-input .el-input-group:nth-child(3)',  // 网址输入框组
+    '.OwO',                          // 表情按钮
+    '.__markdown',                   // Markdown 按钮
+    '.tk-preview',                   // 预览按钮
+    '.tk-comments-title',            // 评论数标题
+    '.tk-comments-sort',             // 排序栏
+    '.tk-comments-actions .tk-icon', // 刷新/设置图标
+    '.tk-action',                    // 评论操作按钮（点赞/回复/删除）
+    '.tk-extras',                    // 操作系统/浏览器信息
+    '.tk-footer',                    // 底部版权
+    '.tk-admin-container',           // 管理后台
+    '.tk-input-image',               // 图片上传 input
+  ];
 
-    // 热门排序
-    if (text === '热门' && text.length < 5) {
-      hideEl(el);
-    }
-    // X 条评论
-    if (/^\d+\s*条评论/.test(text) && text.length < 20) {
-      hideEl(el);
-    }
-    // Powered by Twikoo
-    if (text.includes('Powered by') && text.length < 50) {
-      hideEl(el);
-    }
-    // 操作系统/浏览器信息
-    if (text.length < 80 &&
-        (text.includes('Windows') || text.includes('Mac') || text.includes('Linux') ||
-         text.includes('Chrome') || text.includes('Safari') || text.includes('Firefox') ||
-         text.includes('Edge'))) {
-      hideEl(el);
-    }
-  });
-
-  // 隐藏邮箱和网址输入框的前缀标签（如果 CSS 没隐藏掉）
-  container.querySelectorAll('*').forEach(el => {
-    const text = el.textContent.trim();
-    if ((text === '邮箱' || text === '网址') && el.children.length === 0) {
-      hideEl(el);
-      // 同时隐藏后面的 input
-      let next = el.nextElementSibling;
-      if (next && next.tagName === 'INPUT') {
-        hideEl(next);
-      }
-    }
+  selectors.forEach(selector => {
+    container.querySelectorAll(selector).forEach(el => {
+      el.style.setProperty('display', 'none', 'important');
+    });
   });
 }
 
