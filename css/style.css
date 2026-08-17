@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    觉察归位｜注意力静心训练站 - Core Design System & Global Styles
    ========================================================================== */
 
@@ -778,6 +778,27 @@ main {
 
 .footer-links a:hover {
   color: var(--primary);
+}
+
+/* ===== 简繁切换按钮 ===== */
+.lang-toggle-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  margin-left: 8px;
+  line-height: 1.4;
+}
+
+.lang-toggle-btn:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+  border-color: var(--primary-border);
 }
 
 /* Responsive Media Queries */
